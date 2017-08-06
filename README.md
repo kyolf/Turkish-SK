@@ -101,5 +101,6 @@ Try to log in  `Log in with Google` again, and you're golden!
 
 ## Wireframes for our project
 
-https://wireframe.cc/nbAV7J
+Landing page: https://wireframe.cc/nbAV7J
+Questions page: https://wireframe.cc/K822F9
 
