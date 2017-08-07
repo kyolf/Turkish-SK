@@ -31,9 +31,6 @@ passport.use(
     callbackURL: '/api/auth/google/callback'
   },
   (accessToken, refreshToken, profile, cb) => {
-      // Job 1: Set up Mongo/Mongoose, create a User model which store the
-      // google id, and the access token
-    console.log(profile.id, accessToken);
     let message;
     const newUser = {
       googleId: profile.id,
@@ -43,8 +40,6 @@ passport.use(
       questId: 0
     };
 
-    // User
-    // .findOneAndUpdate({googleId:profile.id}, {$set:{accessToken}}, {new:true})
     User
     .findOne({googleId:profile.id}, (err, user) => {
       if(err){
@@ -73,38 +68,21 @@ passport.use(
         });
       }
     });
-  
-    // Job 2: Update this callback to either update or create the user
-    // so it contains the correct access token
-    // const user = database[accessToken] = {
-    //   googleId: profile.id,
-    //   accessToken: accessToken
-    // };
-    // return cb(null, user);
   }
 ));
 
 passport.use(
   new BearerStrategy(
     (token, done) => {
-      // Job 3: Update this callback to try to find a user with a
-      // matching access token.  If they exist, let em in, if not,
-      // don't.
-      console.log('token:', token);
       User
       .findOne({accessToken:token})
       .exec()
       .then(user =>{
-        console.log(user);
         if(!user){
           return done(null, false);
         }
         return done(null, user);
       });
-      // if (!(token in database)) {
-      //   return done(null, false);
-      // }
-      // return done(null, database[token]);
     }
   )
 );
