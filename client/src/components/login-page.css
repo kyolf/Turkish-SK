@@ -1,0 +1,15 @@
+
+
+.LoginPage > button {
+    display: block;
+    width: 20em;
+    height: 3em;
+    margin-top: 3em;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+a {
+    text-decoration: none;
+    color: black; 
+}

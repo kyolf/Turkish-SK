@@ -3,6 +3,9 @@ import * as Cookies from 'js-cookie';
 
 import QuestionPage from './question-page';
 import LoginPage from './login-page';
+import Header from './header';
+
+import './app.css';
 
 class App extends React.Component {
     constructor(props) {
@@ -40,11 +43,13 @@ class App extends React.Component {
     }
 
     render() {
-        if (!this.state.currentUser) {
-            return <LoginPage />;
-        }
 
-        return <QuestionPage />;
+        return( 
+          <div className="App">
+            <Header />
+            { (!this.state.currentUser) ? <LoginPage /> :  <QuestionPage /> }
+          </div>
+        );
     }
 }
 

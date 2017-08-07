@@ -1,0 +1,23 @@
+
+.header {
+    width: 100%;
+    background-color: #f44336;
+    color: whitesmoke;
+    height: 150px;
+    padding-top: 1.5em;
+    padding-bottom: .5em;
+}
+
+
+.header > h1 {
+    margin-left: 1.5em;
+}
+
+.header > h3{
+    margin-left: 2.8em;
+}
+
+.header > button {
+    display: inline-block;
+    text-align: right;
+}
