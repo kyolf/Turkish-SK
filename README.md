@@ -97,3 +97,10 @@ To fix this, go back to the Google API Dashboard and:
 - Add `http://your-app-name-123.herokuapp.com/api/auth/google/callback` to Authorized redirect URIs
 
 Try to log in  `Log in with Google` again, and you're golden!
+
+
+## Wireframes for our project
+
+* Landing page: https://wireframe.cc/nbAV7J
+* Questions page: https://wireframe.cc/K822F9
+
