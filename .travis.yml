@@ -4,6 +4,6 @@ deploy:
   provider: heroku
   api_key:
     secure: Dk2h2ZrOTFzc51AMtCCJLlSxbl/fHoKY53VjApF79jaD/2wYUZsCUXsxnw8tMwcxWUiC97TtOixrJnFBZfTf49syf2FeRwIWstwXj+pr/5w6zp+6DOH5cEhAm3grgNDQRvCuycl060k/A0CniZwNBB5YZ88LHGoHUP9BNtkix1EK1sK5d9MdzZZfk47oiDUpgAlArZkKp35TDLSZTbLFL5TeETCIr6H6KculPgeGs/Qz0AT064gvy5+T1tOefRd1Hd4zkndBO4U/9jWUn1o1vgC5GCmLT4DXCqm4zqQbw0+aUyZ2XwFH/UE6HDx2qMhylFvzgk3KRJ07qJZzBtet16xdvditDecw48N/36Kq8N89usSD0u8pC9wL1jq9Cr4tGvyy1kZ+AX5iRpJO+L1VNOKjlRswCGOwdfu4NTbXeUd45ITsaXlx8ggZR0VGEbg68DPqiQIAArJp876SMogdyskkwDMH56BjWpcNHm8AdsUftV2H/jFIxn1ikLwCBiOd3Il0DFTA6PxsPnzD/0D/z9PmyVeXISt5lxRC1ZYWu1+brb0jLFbdd4AO4mfTYYU2fd5YJlIqgMKxAyv0aDK3Tct0BLR3G3GryHvtoeFnQvIxtGhArW5xwzK4BXpaVg4pZA/9JPQO8fDVVWRD8Zxex61m1mxKEColMZEXnTtI6Do=
-  app: italianx
+  app: yinelemek
   on:
-    repo: thinkful-c11/Italian-SK
+    repo: thinkful-c11/Turkish-SK
