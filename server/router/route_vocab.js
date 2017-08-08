@@ -41,13 +41,27 @@ vocabRouter.post('/', (req,res)=>{
   }
 
   Vocab
-  .create(createObj)
+  .findOne({questId:createObj.questId})
   .exec()
   .then(vocab => {
-    return res.status(201).json(vocab.apiRepr());
+    if(vocab){
+      message = 'Question Id already exists';
+      return res.status(422).json({message});
+    }
+
+    Vocab
+    .create(createObj)
+    .exec()
+    .then(vocab => {
+      return res.status(201).json(vocab.apiRepr());
+    })
+    .catch(err => {
+      message = `Internal Server Post Vocab Error ${err}`;
+      return res.status(500).json({message});
+    });
   })
   .catch(err => {
-    message = `Internal Server Post Vocab Error ${err}`;
+    message = 'Internal Server Find Exist Question Id Error: ${err}';
     return res.status(500).json({message});
   });
 
