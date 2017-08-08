@@ -7,23 +7,19 @@ const userSchema = mongoose.Schema({
   accessToken:{type:String, required:true},
   numCorrect:{type:Number, required:true},
   numQuestAns:{type:Number, required:true},
+  questIncorrect:[{type:Number}],
   questId:{type:Number, required:true}
-});
-
-userSchema.virtual('percentCor').get(function(){
-  if(this.numQuestAns <= 0){
-    return 'Haven\'t taken quiz';
-  }
-  return `${(this.numCorrect/this.numQuestAns).toFixed(2)}%`.substring(2);
 });
 
 userSchema.methods.apiRepr = function(){
   return {
     id: this._id,
     googleId: this.googleId,
-    accessToken:this.accessToken,
-    percentCor: this.percentCor,
-    questId:this.questId
+    accessToken: this.accessToken,
+    numCorrect: this.numCorrect,
+    numQuestAns: this.numQuestAns,
+    questIncorrect: this.questIncorrect,
+    questId: this.questId
   };
 };
 

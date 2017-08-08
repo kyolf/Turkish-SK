@@ -7,6 +7,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
 
 const {User} = require('./models/models_user.js');
+const {userRouter} = require('./router/route_user.js');
+const {vocabRouter} = require('./router/route_vocab.js');
 
 let secret = {
   CLIENT_ID: process.env.CLIENT_ID,
@@ -117,12 +119,9 @@ app.get('/api/questions',
   (req, res) => res.json(['Question 1', 'Question 2'])
 );
 
-app.get('/api/users', (req,res) => {
-  User
-  .find()
-  .exec()
-  .then(users => res.json(users.map(user => user.apiRepr())));
-});
+app.use('/api/users', userRouter);
+app.use('/api/vocab', vocabRouter);
+
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
