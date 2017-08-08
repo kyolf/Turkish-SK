@@ -40,7 +40,6 @@ vocabRouter.post('/', (req, res)=>{
     return res.status(422).json({message});
   }
 
-  console.log('hiiiiiiiiiiiiiiii',createObj.questId);
   Vocab
   .findOne({questId:createObj.questId})
   .exec()
