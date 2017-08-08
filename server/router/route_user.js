@@ -29,33 +29,33 @@ userRouter.get('/me',
 userRouter.put('/',
   passport.authenticate('bearer', {session: false}), 
   (req,res)=>{
-    let message;
-    const updObj = {};
     const updateFields = ['googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questIncorrect', 'questId'];
+    const updObj = {};
+    let message;
     
     if(req.body.googleId !== req.user.googleId){
       message = `Body Google Id ${req.body.googleId} does not match User Id ${req.user.googleId}`;
       return res.status(400).json({message});
     }
 
-    if(req.body.numCorrect && typeof req.body.numCorrect !== Number){
+    if(req.body.numCorrect && typeof req.body.numCorrect !== 'number'){
       message = 'numCorrect is not a number';
       return res.status(422).json({message});
     }
 
-    if(req.body.numQuestAns && typeof req.body.numQuestAns !== Number){
+    if(req.body.numQuestAns && typeof req.body.numQuestAns !== 'number'){
       message = 'numQuestAns is not a number';
       return res.status(422).json({message});
     }
 
-    if(req.body.questId && typeof req.body.questId !== Number){
+    if(req.body.questId && typeof req.body.questId !== 'number'){
       message = 'questId is not a number';
       return res.status(422).json({message});
     }
 
     if(req.body.questIncorrect){
       req.body.questIncorrect.map(el => {
-        if(typeof el !== Number){
+        if(typeof el !== 'number'){
           message = 'Not every element in questIncorrect is a number';
           return res.status(422).json({message});
         }
@@ -63,7 +63,7 @@ userRouter.put('/',
       });
     }
 
-    updateFields.forEach(field=>{
+    updateFields.map(field=>{
       if(field in req.body){
         updObj[field] = req.body[field];
       }

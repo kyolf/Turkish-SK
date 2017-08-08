@@ -25,17 +25,17 @@ vocabRouter.post('/', (req,res)=>{
     createObj[field] = req.body[field];
   });
 
-  if(typeof createObj.turkWord !== String){
+  if(typeof createObj.turkWord !== 'string'){
     message = 'Turkish Word input is not a string';
     return res.status(422).json({message});
   }
 
-  if(typeof createObj.engWord !== String){
+  if(typeof createObj.engWord !== 'string'){
     message = 'English Word input is not a string';
     return res.status(422).json({message});
   }
 
-  if(typeof createObj.questId !== Number){
+  if(typeof createObj.questId !== 'number'){
     message = 'Question Id is not a number';
     return res.status(422).json({message});
   }
@@ -67,6 +67,42 @@ vocabRouter.post('/', (req,res)=>{
 
 });
 
+vocabRouter.put('/:id', (req,res) => {
+  const updateFields = ['turkWord', 'engWord'];
+  const updObj = {};
+  let message;
 
+  if(req.params.id !== req.body.id){
+    message = `Params Id ${req.params.id} does not equal body id ${req.body.id}`;
+    return res.status(400).json({message});
+  }
+
+  if(req.body.turkWord && typeof req.body.turkWord !== 'string'){
+    message = 'Turkish Word is not a string';
+    return res.status(400).json({message});
+  }
+
+  if(req.body.engWord && typeof req.body.engWord !== 'string'){
+    message = 'English Word is not a string';
+    return res.status(400).json({message});
+  }
+
+  updateFields.map(field => {
+    if(field in req.body){
+      updObj[field] = req.body[field];
+    }
+  });
+
+  Vocab
+  .findByIdAndUpdate(req.params.id, {$set: updObj}, {new:true})
+  .exec()
+  .then(vocab =>{
+    return res.status(201).json(vocab.apiRepr());
+  })
+  .catch(err => {
+    message = `Internal Server Put Vocab Error: ${err}`;
+    return res.status(500).json({message});
+  });
+});
 
 module.exports = {vocabRouter};
