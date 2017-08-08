@@ -1,10 +1,12 @@
 'use strict';
 const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
+
 
 const {User} = require('./models/models_user.js');
 const {userRouter} = require('./router/route_user.js');
@@ -22,6 +24,7 @@ if(process.env.NODE_ENV != 'production') {
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(passport.initialize());
 
 passport.use(
@@ -109,9 +112,9 @@ app.get('/api/auth/logout', (req, res) => {
 
 app.get('/api/me',
   passport.authenticate('bearer', {session: false}),
-  (req, res) => res.json({
-    googleId: req.user.googleId
-  })
+  (req, res) => {
+    res.json({googleId: req.user.googleId});
+  }
 );
 
 app.get('/api/questions',
