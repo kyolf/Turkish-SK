@@ -61,7 +61,7 @@ vocabRouter.post('/', (req,res)=>{
     });
   })
   .catch(err => {
-    message = 'Internal Server Find Exist Question Id Error: ${err}';
+    message = `Internal Server Find Exist Question Id Error: ${err}`;
     return res.status(500).json({message});
   });
 
