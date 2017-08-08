@@ -7,7 +7,7 @@ export default function Header(){
          <div className="header"> 
             <h1><i className="fa fa-repeat" aria-hidden="true"></i> Yinelemek</h1>
             <h3>Learn Turkish with the help of spaced repetition.</h3>
-            {/* <button>Logout</button> */}
+            <button><a href={'/api/auth/logout'}>Logout</a></button>
          </div>
     );
 }

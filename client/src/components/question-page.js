@@ -35,9 +35,17 @@ export default class QuestionPage extends React.Component {
         );
 
         return (
-            <ul className="question-list">
-                {questions}
-            </ul>
+            <div className='question-panel'>
+                <div className='score'>Score: 10/10</div>
+                
+                <form>
+                    <ul className="question-list">
+                        {questions}
+                    </ul>
+                    <input type='text' placeholder='Enter the corresponding English word'></input>
+                    <button type='submit' >Submit</button>
+                </form>
+            </div>
         );
     }
 }
