@@ -18,5 +18,4 @@ vocabSchema.methods.apiRepr = function(){
 };
 
 const Vocab = mongoose.model('Vocab', vocabSchema);
-
 module.exports = {Vocab};
