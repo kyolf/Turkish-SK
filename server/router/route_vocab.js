@@ -4,7 +4,7 @@ const express = require('express');
 const vocabRouter = express.Router();
 const {Vocab} = require('../models/models_vocab.js');
 
-vocabRouter.get('/', (req,res)=>{
+vocabRouter.get('/', (req, res)=>{
   Vocab
   .find()
   .exec()
@@ -12,7 +12,7 @@ vocabRouter.get('/', (req,res)=>{
 });
 
 //For Admin Use Only
-vocabRouter.post('/', (req,res)=>{
+vocabRouter.post('/', (req, res)=>{
   const requiredFields = ['turkWord', 'engWord', 'questId'];
   const createObj = {};
   let message;
@@ -67,7 +67,7 @@ vocabRouter.post('/', (req,res)=>{
 
 });
 
-vocabRouter.put('/:id', (req,res) => {
+vocabRouter.put('/:id', (req, res) => {
   const updateFields = ['turkWord', 'engWord'];
   const updObj = {};
   let message;
@@ -103,6 +103,25 @@ vocabRouter.put('/:id', (req,res) => {
     message = `Internal Server Put Vocab Error: ${err}`;
     return res.status(500).json({message});
   });
+});
+
+vocabRouter.delete('/:id', (req, res) => {
+  let message;
+
+  Vocab.findByIdAndRemove(req.params.id)
+  .exec()
+  .then(() => {
+    return res.status(204).end();
+  })
+  .catch(err => {
+    message = `Internal Server Delete Error ${err}`;
+    return res.status(500).json({message});
+  });
+});
+
+
+vocabRouter.use('*', (req, res) => {
+  return res.status(404).json({message:'Page Not Found'});
 });
 
 module.exports = {vocabRouter};

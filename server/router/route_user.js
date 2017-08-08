@@ -5,7 +5,7 @@ const userRouter = express.Router();
 const passport = require('passport');
 const {User} = require('../models/models_user.js');
 
-userRouter.get('/', (req,res) => {
+userRouter.get('/', (req, res) => {
   User
   .find()
   .exec()
@@ -14,7 +14,7 @@ userRouter.get('/', (req,res) => {
 
 userRouter.get('/me',
   passport.authenticate('bearer', {session: false}), 
-  (req,res)=>{
+  (req, res)=>{
     const userObj = {
       googleId: req.user.googleId,
       accessToken: req.user.accessToken,
@@ -28,7 +28,7 @@ userRouter.get('/me',
 
 userRouter.put('/',
   passport.authenticate('bearer', {session: false}), 
-  (req,res)=>{
+  (req, res)=>{
     const updateFields = ['googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questIncorrect', 'questId'];
     const updObj = {};
     let message;
@@ -81,4 +81,9 @@ userRouter.put('/',
     });
   });
 
+
+userRouter.use('*', (req, res) => {
+  return res.status(404).json({message:'Page Not Found'});
+}); 
+ 
 module.exports = {userRouter};
