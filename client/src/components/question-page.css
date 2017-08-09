@@ -25,3 +25,13 @@ button{
     margin-right: 90px;
     margin-bottom: 1em;
 }
+
+ul{
+    list-style: none;
+}
+li {
+    text-align: center;
+    margin-left: -4em;
+    font-size: x-large;
+    font-weight: bold;
+}

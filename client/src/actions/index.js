@@ -23,7 +23,7 @@ export const fetchMeError = (error)=>({
 export const FETCH_ME = 'FETCH_ME';
 export const fetchMe = (accessToken)=>dispatch=>{
   dispatch(fetchMeRequest())
-  return fetch('/api/me', {
+  return fetch('/api/users/me', {
     headers: {
       'Authorization': `Bearer ${accessToken}`
     }}).then(response => {
@@ -67,7 +67,7 @@ export const fetchVocabError = (error)=>({
 export const FETCH_VOCAB = 'FETCH_VOCAB';
 export const fetchVocab = (accessToken)=>dispatch=>{
     dispatch(fetchMeRequest());
-    return fetch('/api/questions/', {
+    return fetch('/api/vocab/', {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }}).then(response => {
@@ -76,6 +76,7 @@ export const fetchVocab = (accessToken)=>dispatch=>{
             }
             return response.json();
         }).then(vocab => {
+            console.log('these are the words being returned: ', vocab);
             return dispatch(fetchVocabSuccess(vocab));
           })
         .catch(err => {
