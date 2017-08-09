@@ -23,7 +23,7 @@ class App extends React.Component {
 
         return( 
           <div className="App">
-            <Header />
+            <Header currentUser={this.props.currentUser}/>
             { (!this.props.currentUser) ? <LoginPage /> :  <QuestionPage /> }
           </div>
         );
