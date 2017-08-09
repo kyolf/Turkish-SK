@@ -85,6 +85,18 @@ export const fetchVocab = (accessToken)=>dispatch=>{
         })
 }
 
+export const GET_NEXT_WORD = 'GET_NEXT_WORD';
+export const getNextWord = (current)=>({
+  type: GET_NEXT_WORD,
+  current
+})
+
+export const INCREMENT_SCORE = 'INCREMENT_SCORE';
+export const incrementScore = ()=>({
+  type: INCREMENT_SCORE
+})
+
+
 //GET Google login
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
 export const fetchLoginRequest = ()=>({
