@@ -5,6 +5,7 @@ class LinkedList{
     this.head = null;
   }
 
+  //regular insert node to linked list
   insert(curNode, turkWord, engWord, questId, weight){
     let nodeIns ={turkWord, engWord, questId, weight};
 
@@ -18,6 +19,7 @@ class LinkedList{
     }
   }
 
+  //inserting all the values in the array to the linkedlist
   insertAll(arr){
     let node;
     for(let i = 0; i < arr.length; i++){
@@ -43,6 +45,7 @@ class LinkedList{
     }
   }
 
+  //delete the first element in the linked list
   delete(){
     if(!this.head){
       return null;
@@ -55,6 +58,8 @@ class LinkedList{
     return deletedNode;
   }
 
+  //deleting all the elements in the linked list
+  //then inserting the values to the array.
   deleteAll(){
     let arr = [];
     
