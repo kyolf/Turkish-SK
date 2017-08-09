@@ -99,6 +99,10 @@ export const incrementScore = ()=>({
   type: INCREMENT_SCORE
 })
 
+export const INCREMENT_NUM_QUEST = 'INCREMENT_NUM_QUEST';
+export const incrementNumQuest = ()=>({
+  type:INCREMENT_NUM_QUEST
+})
 
 //GET Google login
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';

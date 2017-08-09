@@ -7,6 +7,7 @@ const initialState = {
   currentWord: 0,
   score: 0,
   numSeenWords: 1,
+  numQuest: 0,
   loggedIn: false,
   loading: false,
   error: null,
@@ -36,6 +37,8 @@ export const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {numSeenWords: ++action.numSeenWords, loggedIn: true, loading:false});
       case actions.INCREMENT_SCORE:
         return Object.assign({}, state, {score: ++state.score, loggedIn: true, loading: false});
+      case actions.INCREMENT_NUM_QUEST:
+        return Object.assign({}, state, {score: ++state.numSeenWords, loggedIn: true, loading: false});
       default:
         return state;
     }
