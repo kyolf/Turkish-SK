@@ -1,8 +1,9 @@
 import * as actions from '../actions'
+import LinkedList from '../linkedList';
 
 const initialState = {
   currentUser: null,
-  vocabWords: [],
+  vocabWords: new LinkedList(),
   currentWord: 0,
   score: 0,
   loggedIn: false,
@@ -21,7 +22,7 @@ export const reducer = (state = initialState, action) => {
       case actions.FETCH_VOCAB_REQUEST:
         return Object.assign({}, state, {loading: true});
       case actions.FETCH_VOCAB_SUCCESS:
-        return Object.assign({}, state, {vocabWords: action.vocabWords, loading: false});
+        return Object.assign({}, state, {vocabWords: state.vocabWords.insertAll(action.vocabWords), loading: false});
       case actions.FETCH_VOCAB_ERROR:
         return Object.assign({}, state, {error: action.error, loading: false});
       case actions.FETCH_LOGIN_REQUEST:
