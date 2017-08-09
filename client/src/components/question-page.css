@@ -24,6 +24,7 @@ button{
     height: 2em;
     margin-right: 90px;
     margin-bottom: 1em;
+    cursor: pointer;
 }
 
 ul{
