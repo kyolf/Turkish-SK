@@ -23,8 +23,12 @@ class QuestionPage extends React.Component {
 
     render() {
         console.log(this.props.vocabWords.head);
+        let display = '';
+        if(this.props.lastAnswer)
+          display = 'green';
+        else if (this.props.lastAnswer === false){ display = 'red'};
         return (
-            <div className='question-panel'>
+            <div className={`question-panel ${display}`}>
                 <div className='score'>Score: {this.props.score}/{this.props.numSeenWords}</div>
 
                 <form onSubmit={e => this.onSubmit(e)}>
@@ -45,6 +49,7 @@ const mapStateToProps = state => ({
     vocabWords: state.vocabWords,
     score: state.score,
     numSeenWords: state.numSeenWords,
+    lastAnswer: state.lastAnswer,
 });
 
 export default connect(mapStateToProps)(QuestionPage);

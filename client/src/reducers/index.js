@@ -7,6 +7,7 @@ const initialState = {
   currentWord: 0,
   score: 0,
   numSeenWords: 0,
+  lastAnswer: null,
   numQuest: 0,
   loggedIn: false,
   loading: false,
@@ -46,6 +47,7 @@ export const reducer = (state = initialState, action) => {
             vocabWords: action.vocabWords,
             score: ++state.score,
             numSeenWords: ++state.numSeenWords,
+            lastAnswer: true,
             loading: false
           });
         }
@@ -55,6 +57,7 @@ export const reducer = (state = initialState, action) => {
           return Object.assign({}, state, {
             vocabWords: action.vocabWords,
             numSeenWords: ++state.numSeenWords,
+            lastAnswer: false,
             loading: false
           });
         }

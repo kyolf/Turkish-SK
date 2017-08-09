@@ -6,7 +6,8 @@
     padding: 30px 10px 30px 40px;
     width: 50%;
     height: 130px;
-    border: 1px solid lightgrey;
+    border: 3px solid lightgrey;
+    /* background-color: blue; */
 }
 
 input{
@@ -35,4 +36,27 @@ li {
     margin-left: -4em;
     font-size: x-large;
     font-weight: bold;
+}
+
+@keyframes fromRed {
+    from {border-color: #f44336;}
+    to {border-color: lightgrey;}
+}
+
+@keyframes fromGreen {
+    from {border-color: green;}
+    to {border-color: lightgrey;}
+}
+
+
+.red{
+    /* border: 1px solid #f44336;  */
+    animation-name: fromRed;
+    animation-duration: 4s;
+}
+
+.green{
+    /* border: 1px solid lightgreen; */
+    animation-name: fromGreen;
+    animation-duration: 4s;
 }
