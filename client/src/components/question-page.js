@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as Cookies from 'js-cookie';
 
-import {fetchVocab, incrementNumSeen, incrementScore} from '../actions';
-//import LinkedList from '../linkedList';
+import * as actions from '../actions';
 
 import './question-page.css';
 
@@ -11,20 +10,14 @@ class QuestionPage extends React.Component {
 
     componentDidMount() {
         const accessToken = Cookies.get('accessToken');
-        this.props.dispatch(fetchVocab(accessToken));
+        this.props.dispatch(actions.fetchVocab(accessToken));
     }
 
     onSubmit(e){
         e.preventDefault();
-        const correctWord = this.props.vocabWords.head.engWord;
-        if(this.textInput.value === correctWord){
-            console.log("you got it right: ", correctWord);
-            this.props.dispatch(incrementScore());
-        }
-        else{
-            console.log("you got it wrong: ", correctWord);
-        }
-        this.props.dispatch(incrementNumSeen(this.props.numSeenWords));
+        const userAnswer = this.textInput.value.trim().toLowerCase();
+        this.props.dispatch(actions.submitAnswer(userAnswer, this.props.vocabWords));
+        
         this.textInput.value = '';
     }
 

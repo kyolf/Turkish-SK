@@ -104,6 +104,15 @@ export const incrementNumQuest = ()=>({
   type:INCREMENT_NUM_QUEST
 })
 
+export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
+export const submitAnswer = (userAnswer, vocabWords)=> ({
+  type : SUBMIT_ANSWER, 
+  vocabWords,
+  userAnswer
+});
+
+
+//UNused and UNneeded
 //GET Google login
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
 export const fetchLoginRequest = ()=>({
