@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as Cookies from 'js-cookie';
 
-import {fetchVocab, getNextWord, incrementScore} from '../actions';
+import {fetchVocab, incrementNumSeen, incrementScore} from '../actions';
+//import LinkedList from '../linkedList';
 
 import './question-page.css';
 
@@ -15,27 +16,27 @@ class QuestionPage extends React.Component {
 
     onSubmit(e){
         e.preventDefault();
-        if(this.textInput.value === this.props.vocabWords[this.props.current].engWord){
-            console.log("you got it right: ", this.props.vocabWords[this.props.current].engWord);
+        const correctWord = this.props.vocabWords.head.engWord;
+        if(this.textInput.value === correctWord){
+            console.log("you got it right: ", correctWord);
             this.props.dispatch(incrementScore());
         }
         else{
-            console.log("you got it wrong: ", this.props.vocabWords[this.props.current].engWord);
+            console.log("you got it wrong: ", correctWord);
         }
-        this.props.dispatch(getNextWord(this.props.current));
+        this.props.dispatch(incrementNumSeen(this.props.numSeenWords));
         this.textInput.value = '';
     }
 
     render() {
-        console.log(this.props.vocabWords);
-        console.log(this.props.current);
+        console.log(this.props.vocabWords.head);
         return (
             <div className='question-panel'>
-                <div className='score'>Score: {this.props.score}/{this.props.vocabWords.length}</div>
+                <div className='score'>Score: {this.props.score}/{this.props.numSeenWords}</div>
 
                 <form onSubmit={e => this.onSubmit(e)}>
                     <ul className="question-list">
-                        <li key={this.props.current}>{this.props.vocabWords.length > 0 ? this.props.vocabWords[this.props.current].turkWord : null}</li>
+                        <li key={this.props.numSeenWords}>{ this.props.vocabWords.head != null ? this.props.vocabWords.head.turkWord : null}</li>
                     </ul>
                     <input type='text' placeholder='Enter the corresponding English word' 
                         ref={input => this.textInput = input} required></input>
@@ -49,8 +50,8 @@ class QuestionPage extends React.Component {
 
 const mapStateToProps = state => ({
     vocabWords: state.vocabWords,
-    current: state.currentWord,
     score: state.score,
+    numSeenWords: state.numSeenWords,
 });
 
 export default connect(mapStateToProps)(QuestionPage);

@@ -1,4 +1,5 @@
 import * as Cookies from 'js-cookie';
+import LinkedList from '../linkedList';
 
 
 //GET Me
@@ -77,7 +78,9 @@ export const fetchVocab = (accessToken)=>dispatch=>{
             return response.json();
         }).then(vocab => {
             console.log('these are the words being returned: ', vocab);
-            return dispatch(fetchVocabSuccess(vocab));
+            const newList = new LinkedList();
+            newList.insertAll(vocab);
+            return dispatch(fetchVocabSuccess(newList));
           })
         .catch(err => {
             console.log(err);
@@ -85,10 +88,10 @@ export const fetchVocab = (accessToken)=>dispatch=>{
         })
 }
 
-export const GET_NEXT_WORD = 'GET_NEXT_WORD';
-export const getNextWord = (current)=>({
-  type: GET_NEXT_WORD,
-  current
+export const INCREMENT_NUM_SEEN = 'INCREMENT_NUM_SEEN';
+export const incrementNumSeen = (numSeenWords)=>({
+  type: INCREMENT_NUM_SEEN,
+  numSeenWords
 })
 
 export const INCREMENT_SCORE = 'INCREMENT_SCORE';

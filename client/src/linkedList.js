@@ -1,8 +1,12 @@
-'use strict';
+//'use strict';
 
 export default class LinkedList{
   constructor(){
     this.head = null;
+  }
+
+  isEmpty(){
+    return this.head === null;
   }
 
   //regular insert node to linked list
