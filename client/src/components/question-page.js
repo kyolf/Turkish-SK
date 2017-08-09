@@ -27,9 +27,6 @@ class QuestionPage extends React.Component {
     }
 
     render() {
-        // const vocabWords = this.props.vocabWords.map((word, index) =>
-        //     <li key={index}>{word.turkWord}</li>
-        // );
         console.log(this.props.vocabWords);
         console.log(this.props.current);
         return (
@@ -41,7 +38,7 @@ class QuestionPage extends React.Component {
                         <li key={this.props.current}>{this.props.vocabWords.length > 0 ? this.props.vocabWords[this.props.current].turkWord : null}</li>
                     </ul>
                     <input type='text' placeholder='Enter the corresponding English word' 
-                        ref={input => this.textInput = input}></input>
+                        ref={input => this.textInput = input} required></input>
                     <button type='submit' >Submit</button>
                 </form>
             </div>
