@@ -1,46 +1,30 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import * as Cookies from 'js-cookie';
+
+import {fetchVocab} from '../actions';
 
 import './question-page.css';
 
-export default class QuestionPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            questions: []
-        };
-    }
+class QuestionPage extends React.Component {
 
     componentDidMount() {
         const accessToken = Cookies.get('accessToken');
-        fetch('/api/questions', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            }).then(res => {
-            if (!res.ok) {
-                throw new Error(res.statusText);
-            }
-            return res.json();
-        }).then(questions =>
-            this.setState({
-                questions
-            })
-        );
+        this.props.dispatch(fetchVocab(accessToken));
     }
 
     render() {
-        const questions = this.state.questions.map((question, index) =>
-            <li key={index}>{question}</li>
+        const vocabWords = this.props.vocabWords.map((word, index) =>
+            <li key={index}>{word}</li>
         );
 
         return (
             <div className='question-panel'>
                 <div className='score'>Score: 10/10</div>
-                
+
                 <form>
                     <ul className="question-list">
-                        {questions}
+                        {vocabWords}
                     </ul>
                     <input type='text' placeholder='Enter the corresponding English word'></input>
                     <button type='submit' >Submit</button>
@@ -48,4 +32,12 @@ export default class QuestionPage extends React.Component {
             </div>
         );
     }
+
 }
+
+const mapStateToProps = state => ({
+    vocabWords: state.vocabWords,
+});
+
+export default connect(mapStateToProps)(QuestionPage);
+
