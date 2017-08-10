@@ -18,3 +18,22 @@ a {
     text-decoration: none;
     color: black; 
 }
+
+@media (max-width: 800px){
+
+    .LoginPage{
+        display: relative;
+        float: center;
+        width: 30%;
+    }
+
+}
+
+@media (max-width: 470px){
+
+     .LoginPage{
+        display: relative;
+        float: center;
+        width: 50%;
+    }    
+}

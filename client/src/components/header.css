@@ -26,3 +26,38 @@
     cursor: pointer;
 }
 
+@media (max-width: 800px){
+
+    /* .header > h3 {
+        width: 350px;
+    } */
+
+    .header a > button{
+    display: relative;
+    float: right;
+    width: 15em;
+    margin-top: -9em;
+    margin-right: 4em;
+    cursor: pointer;
+    }
+}
+
+@media (max-width: 470px){
+
+    .header{
+        width: 470px;
+    }
+
+    .header > h3 {
+        width: 350px;
+    }       
+
+    .header a > button{
+    display: relative;
+    float: right;
+    width: 10em;
+    margin-top: -11em;
+    margin-right: 4em;
+    }
+}
+
