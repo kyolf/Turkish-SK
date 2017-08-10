@@ -21,7 +21,7 @@ userRouter.get('/me',
       numCorrect: req.user.numCorrect,
       numQuestAns: req.user.numQuestAns,
       questId: req.user.questId,
-      questIncorrect: req.user.questIncorrect
+      questTracker: req.user.questTracker
     };
     res.json(userObj);
   });
@@ -29,7 +29,7 @@ userRouter.get('/me',
 userRouter.put('/',
   passport.authenticate('bearer', {session: false}), 
   (req, res)=>{
-    const updateFields = ['googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questIncorrect', 'questId'];
+    const updateFields = ['googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questTracker', 'questId'];
     const updObj = {};
     let message;
     
@@ -53,10 +53,18 @@ userRouter.put('/',
       return res.status(422).json({message});
     }
 
-    if(req.body.questIncorrect){
-      req.body.questIncorrect.map(el => {
-        if(typeof el !== 'number'){
-          message = 'Not every element in questIncorrect is a number';
+    if(req.body.questTracker){
+      req.body.questTracker.map(el => {
+        if(typeof el.questId !== 'number'){
+          message = 'Not every element with questId is a number';
+          return res.status(422).json({message});
+        }
+        if(typeof el.turkWord !== 'string'){
+          message = 'Not every element with turkWord is a string';
+          return res.status(422).json({message});
+        }
+        if(typeof el.engWord !== 'number'){
+          message = 'Not every element with engWord is a string';
           return res.status(422).json({message});
         }
         return el;

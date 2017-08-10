@@ -27,24 +27,26 @@ export const fetchMe = (accessToken)=>dispatch=>{
   return fetch('/api/users/me', {
     headers: {
       'Authorization': `Bearer ${accessToken}`
-    }}).then(response => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              // Unauthorized, clear the cookie and go to
-              // the login page
-              Cookies.remove('accessToken');
-              return;
-            }
-            Promise.reject(response.statusText);
-          }
-          return response.json();
-        }).then(currentUser => {
-            return dispatch(fetchMeSuccess(currentUser));
-            })
-        .catch(err => {
-            console.log(err);
-            dispatch(fetchMeError(err));
-        })
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Unauthorized, clear the cookie and go to
+        // the login page
+        Cookies.remove('accessToken');
+        return;
+      }
+      Promise.reject(response.statusText);
+    }
+    return response.json();
+  }).then(currentUser => {
+      return dispatch(fetchMeSuccess(currentUser));
+  })
+  .catch(err => {
+    console.log(err);
+    dispatch(fetchMeError(err));
+  })
 }
 
 //GET vocab words
@@ -67,25 +69,53 @@ export const fetchVocabError = (error)=>({
 
 export const FETCH_VOCAB = 'FETCH_VOCAB';
 export const fetchVocab = (accessToken)=>dispatch=>{
-    dispatch(fetchMeRequest());
+  const newList = new LinkedList();
+  dispatch(fetchMeRequest());
+  return fetch('/api/users/me', {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Unauthorized, clear the cookie and go to
+        // the login page
+        Cookies.remove('accessToken');
+        return;
+      }
+      Promise.reject(response.statusText);
+    }
+    return response.json();
+  })
+  .then(currentUser => {
+    console.log('Current User', currentUser);
+    const tracker = currentUser.questTracker;
+    if(tracker.length !== 0 ){
+      newList.insertAll(tracker);
+      return dispatch(fetchVocabSuccess(newList));
+    }
     return fetch('/api/vocab/', {
       headers: {
         'Authorization': `Bearer ${accessToken}`
-      }}).then(response => {
-            if (!response.ok) {
-                Promise.reject(response.statusText);
-            }
-            return response.json();
-        }).then(vocab => {
-            console.log('these are the words being returned: ', vocab);
-            const newList = new LinkedList();
-            newList.insertAll(vocab);
-            return dispatch(fetchVocabSuccess(newList));
-          })
-        .catch(err => {
-            console.log(err);
-            dispatch(fetchVocabError(err));
-        })
+      }
+    })
+  })
+  .then(response => {
+    if (!response.ok) {
+      Promise.reject(response.statusText);
+    }
+    return response.json();
+  })
+  .then(vocab => {
+    console.log('these are the words being returned: ', vocab);
+    newList.insertAll(vocab);
+    return dispatch(fetchVocabSuccess(newList));
+  })
+  .catch(err => {
+    console.log(err);
+    dispatch(fetchVocabError(err));
+  })
 }
 
 export const INCREMENT_NUM_SEEN = 'INCREMENT_NUM_SEEN';
@@ -99,10 +129,6 @@ export const incrementScore = ()=>({
   type: INCREMENT_SCORE
 })
 
-export const INCREMENT_NUM_QUEST = 'INCREMENT_NUM_QUEST';
-export const incrementNumQuest = ()=>({
-  type:INCREMENT_NUM_QUEST
-})
 
 export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
 export const submitAnswer = (userAnswer, vocabWords)=> ({

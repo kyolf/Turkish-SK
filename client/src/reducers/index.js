@@ -63,8 +63,7 @@ export const reducer = (state = initialState, action) => {
             loading: false
           });
         }
-      // case actions.INCREMENT_NUM_QUEST:
-      //   return Object.assign({}, state, {: ++state.numSeenWords, loggedIn: true, loading: false});
+
       default:
         return state;
     }

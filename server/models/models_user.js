@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   accessToken:{type:String, required:true},
   numCorrect:{type:Number, required:true},
   numQuestAns:{type:Number, required:true},
-  questIncorrect:[{type:Number}],
+  questTracker:[{turkWord:String, engWord: String, questId:Number}],
   questId:{type:Number, required:true}
 });
 
@@ -18,7 +18,7 @@ userSchema.methods.apiRepr = function(){
     accessToken: this.accessToken,
     numCorrect: this.numCorrect,
     numQuestAns: this.numQuestAns,
-    questIncorrect: this.questIncorrect,
+    questTracker: this.questTracker,
     questId: this.questId
   };
 };
