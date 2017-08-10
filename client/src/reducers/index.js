@@ -33,6 +33,8 @@ export const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {numSeenWords: ++action.numSeenWords, loggedIn: true, loading:false});
       case actions.INCREMENT_SCORE:
         return Object.assign({}, state, {score: ++state.score, loggedIn: true, loading: false});
+      case actions.RESET_FEEDBACK:
+        return Object.assign({}, state, {lastAnswer:null});
       case actions.SUBMIT_ANSWER:
         const node = action.vocabWords.delete();
         if( action.userAnswer === node.engWord){

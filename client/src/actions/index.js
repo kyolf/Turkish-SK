@@ -111,6 +111,10 @@ export const submitAnswer = (userAnswer, vocabWords)=> ({
   userAnswer
 });
 
+export const RESET_FEEDBACK = 'RESET_FEEDBACK';
+export const resetFeedBack = () => ({
+  type: RESET_FEEDBACK 
+});
 
 //UNused and UNneeded
 //GET Google login

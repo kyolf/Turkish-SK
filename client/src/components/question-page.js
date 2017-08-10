@@ -16,6 +16,7 @@ class QuestionPage extends React.Component {
     onSubmit(e){
         e.preventDefault();
         const userAnswer = this.textInput.value.trim().toLowerCase();
+        // this.props.dispatch(actions.resetFeedBack());
         this.props.dispatch(actions.submitAnswer(userAnswer, this.props.vocabWords));
         
         this.textInput.value = '';
@@ -37,7 +38,7 @@ class QuestionPage extends React.Component {
                             <li key={this.props.numSeenWords}>{ this.props.vocabWords.head != null ? this.props.vocabWords.head.turkWord : null}</li>
                         </ul>
                         <input type='text' placeholder='Enter the corresponding English word' 
-                            ref={input => this.textInput = input} required></input>
+                            ref={input => this.textInput = input} onChange={e=>this.props.dispatch(actions.resetFeedBack())}required></input>
                         <button type='submit' >Submit</button>
                     </form>
                 </div>
