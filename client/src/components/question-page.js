@@ -28,17 +28,26 @@ class QuestionPage extends React.Component {
           display = 'green';
         else if (this.props.lastAnswer === false){ display = 'red'};
         return (
-            <div className={`question-panel ${display}`}>
-                <div className='score'>Score: {this.props.score}/{this.props.numSeenWords}</div>
+            <div className='question-page'>
+                <div className={`question-panel ${display}`}>
+                    <div className='score'>Score: {this.props.score}/{this.props.numSeenWords}</div>
 
-                <form onSubmit={e => this.onSubmit(e)}>
-                    <ul className="question-list">
-                        <li key={this.props.numSeenWords}>{ this.props.vocabWords.head != null ? this.props.vocabWords.head.turkWord : null}</li>
-                    </ul>
-                    <input type='text' placeholder='Enter the corresponding English word' 
-                        ref={input => this.textInput = input} required></input>
-                    <button type='submit' >Submit</button>
-                </form>
+                    <form onSubmit={e => this.onSubmit(e)}>
+                        <ul className='question-list'>
+                            <li key={this.props.numSeenWords}>{ this.props.vocabWords.head != null ? this.props.vocabWords.head.turkWord : null}</li>
+                        </ul>
+                        <input type='text' placeholder='Enter the corresponding English word' 
+                            ref={input => this.textInput = input} required></input>
+                        <button type='submit' >Submit</button>
+                    </form>
+                </div>
+                {this.props.lastAnswer === false ?
+                <div className='previous-question'>
+                        <ul className='question-list'>
+                            <li key={this.props.numSeenWords-1}>{this.props.previousWord.turkWord} : {this.props.previousWord.engWord}</li>
+                        </ul>
+                </div>
+                : null }
             </div>
         );
     }
@@ -50,6 +59,7 @@ const mapStateToProps = state => ({
     score: state.score,
     numSeenWords: state.numSeenWords,
     lastAnswer: state.lastAnswer,
+    previousWord: state.previousWord,
 });
 
 export default connect(mapStateToProps)(QuestionPage);

@@ -4,6 +4,7 @@ import LinkedList from '../linkedList';
 const initialState = {
   currentUser: null,
   vocabWords: new LinkedList(),
+  previousWord: null,
   currentWord: 0,
   score: 0,
   numSeenWords: 0,
@@ -57,6 +58,7 @@ export const reducer = (state = initialState, action) => {
           return Object.assign({}, state, {
             vocabWords: action.vocabWords,
             numSeenWords: ++state.numSeenWords,
+            previousWord: node,
             lastAnswer: false,
             loading: false
           });
