@@ -6,7 +6,7 @@ A Web App that uses a spaced repitition algorithm in order to help you learn Tur
 
 Our app is deployed at http://yinelemek.herokuapp.com/.
 
-## Spaced Repitition Algoritm Explained
+## Spaced Repitition Algorithm Explained
 If you correctly answered the vocab, the importance value will be multiplied by 2 and move importance value spaces from the start point.
 
 If you incorrectly answered the vocab, the importance value will be reset to 1 and it will show up after you finish answering the current word.
