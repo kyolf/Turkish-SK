@@ -6,15 +6,15 @@ A Web App that uses a space algorithm in order to help you learn Turkish.
 
 Our app is deployed at http://yinelemek.herokuapp.com/.
 
-##Space Algoritm Explained
+## Space Algoritm Explained
 If you correctly answered the vocab, the importance value will be multiplied by 2 and move importance value spaces from the start point.
 
 If you incorrectly answered the vocab, the importance value will be reset to 1 and it will show up after you finish answering the current word.
 
 ## Technology Used
-**FrontEnd**: HTML, CSS, Javascript, React, Redux 
-**BackEnd**: NodeJs, Express, Passport, MongoDB, Mongoose
-**Deployment**: Mlab, Heroku, Travis
+**FrontEnd**: HTML, CSS, Javascript, React, Redux  </br>
+**BackEnd**: NodeJs, Express, Passport, MongoDB, Mongoose </br>
+**Deployment**: Mlab, Heroku, Travis </br>
 
 ## Description Of API
 * **GET** http://yinelemek.herokuapp.com/api/vocab 
@@ -112,17 +112,17 @@ This file is ignored by git because it is in your `.gitignore`. Never commit or 
 
 ## ScreenShots
 #### LogIn Page/ Introductory Page
-When you go to our website, you will be directed to our Introductory Page / Login Page <br/>
-![Login](README_images/home.png "Login Page") <br/>
+When you go to our website, you will be directed to our Introductory Page / Login Page </br>
+![Login](README_images/home.png "Login Page") </br>
 
 #### Question Page
-When you are logged in from Google, you will be directed to our Question Page <br/>
-![Question](README_images/question.png "Question Page") <br/>
+When you are logged in from Google, you will be directed to our Question Page </br>
+![Question](README_images/question.png "Question Page") </br>
 
 #### Answer Correctly
-If you answer the question correctly, it will look like the page below. <br/>
-![Correct](README_images/correct.png "Correct Page") <br/>
+If you answer the question correctly, it will look like the page below. </br>
+![Correct](README_images/correct.png "Correct Page") </br>
 
 #### Answer Incorrectly
-If you answer the question incorrectly, it will look like the page below. <br/>
-![Incorrect](README_images/incorrect.png "Incorrect Page") <br/>
+If you answer the question incorrectly, it will look like the page below. </br>
+![Incorrect](README_images/incorrect.png "Incorrect Page") </br>
