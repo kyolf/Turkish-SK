@@ -8,7 +8,6 @@ const userSchema = mongoose.Schema({
   numCorrect:{type:Number, required:true},
   numQuestAns:{type:Number, required:true},
   questTracker:[{turkWord:String, engWord:String, questId:Number, weight:Number}],
-  lastAnswer:{type:Boolean}
 });
 
 userSchema.methods.apiRepr = function(){
@@ -18,8 +17,7 @@ userSchema.methods.apiRepr = function(){
     accessToken: this.accessToken,
     numCorrect: this.numCorrect,
     numQuestAns: this.numQuestAns,
-    questTracker: this.questTracker,
-    lastAnswer: this.lastAnswer
+    questTracker: this.questTracker
   };
 };
 

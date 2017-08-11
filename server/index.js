@@ -41,8 +41,7 @@ passport.use(
       accessToken,
       numCorrect: 0,
       numQuestAns: 0,
-      numTracker: [],
-      lastAnswer: null
+      numTracker: []
     };
 
     User

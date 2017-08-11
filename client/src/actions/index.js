@@ -20,7 +20,6 @@ export const fetchMeError = (error)=>({
   error
 });
 
-
 export const FETCH_ME = 'FETCH_ME';
 export const fetchMe = (accessToken)=>dispatch=>{
   dispatch(fetchMeRequest())
@@ -89,7 +88,6 @@ export const fetchVocab = (accessToken)=>dispatch=>{
     return response.json();
   })
   .then(currentUser => {
-    console.log('Current User', currentUser);
     const tracker = currentUser.questTracker;
     if(tracker.length !== 0 ){
       newList.insertAll(tracker);
@@ -115,7 +113,7 @@ export const fetchVocab = (accessToken)=>dispatch=>{
     .then(vocab => {
       console.log('these are the words being returned: ', vocab);
       newList.insertAll(vocab);
-      return dispatch(fetchVocabSuccess(newList));
+      return dispatch(fetchVocabSuccess(newList, 0, 0));
     })
     .catch(err => {
       console.log(err);
@@ -155,13 +153,6 @@ export const incrementNumQuest = ()=>({
   type:INCREMENT_NUM_QUEST
 })
 
-export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
-export const submitAnswer = (userAnswer, vocabWords)=> ({
-  type : SUBMIT_ANSWER, 
-  vocabWords,
-  userAnswer
-});
-
 export const RESET_FEEDBACK = 'RESET_FEEDBACK';
 export const resetFeedBack = ()=>({
   type: RESET_FEEDBACK 
@@ -173,12 +164,13 @@ export const answerQuestionRequest = ()=>({
 });
 
 export const ANSWER_QUESTION_SUCCESS = 'ANSWER_QUESTION_SUCCESS';
-export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, lastAnswer)=>({
+export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, lastAnswer, previousWord)=>({
   type:ANSWER_QUESTION_SUCCESS,
   numCorrect,
   numQuestAns,
   questTracker,
-  lastAnswer
+  lastAnswer,
+  previousWord
 });
 
 export const ANSWER_QUESTION_ERROR = 'ANSWER_QUESTION_ERROR';
@@ -188,7 +180,7 @@ export const answerQuestionError = (error) =>({
 });
 
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
-export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, numQuestAns, lastAnswer, accessToken)=>dispatch=>{
+export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, numQuestAns, accessToken)=>dispatch=>{
   const node = vocabWords.delete();
   const correctAns = {
     turkWord: node.turkWord,
@@ -196,9 +188,7 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
     questId: node.questId,
     weight: node.weight || 1
   }
-  console.log('vocabWords before fetch ',vocabWords);
   const newArr = vocabWords.deleteAll();
-  console.log('newArr ', newArr);
   const updObj = {
     googleId: currentUser.googleId,
     correctAns,
@@ -231,9 +221,7 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
   .then(userInfo=>{
     const llist = new LinkedList();
     llist.insertAll(userInfo.questTracker);
-    console.log('I AM HERE',llist);
-    console.log('...................', userInfo.lastAnswer);
-    return dispatch(answerQuestionSuccess(userInfo.numCorrect, userInfo.numQuestAns, llist, userInfo.lastAnswer))
+    return dispatch(answerQuestionSuccess(userInfo.numCorrect, userInfo.numQuestAns, llist, userInfo.lastAnswer, userInfo.previousWord));
   })
   .catch(error=>{
     return dispatch(answerQuestionError(error));
@@ -273,6 +261,6 @@ export const fetchLogin = ()=>dispatch=>{
           })
         .catch(err => {
             console.log(err);
-            dispatch(fetchLoginError(err));
+            return dispatch(fetchLoginError(err));
         })
 }

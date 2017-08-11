@@ -37,15 +37,15 @@ userRouter.put('/checkAnswer',
       message = `Body Google Id ${req.body.googleId} does not match User Id ${req.user.googleId}`;
       return res.status(400).json({message});
     }
-    console.log('Wdf ',req.body.correctAns);
+    
     if(!req.body.correctAns){
       message = 'correctAns is not in the body';
-      return res.status(422).json({message});
+      return res.status(423).json({message});
     }
 
     if(!req.body.questTracker){
       message = 'Quest Tracker is not in the body';
-      return res.status(422).json({message});
+      return res.status(424).json({message});
     }
 
     if(!req.body.userInput && typeof req.body.userInput !== 'string'){
@@ -55,12 +55,12 @@ userRouter.put('/checkAnswer',
 
     if(req.body.numCorrect && typeof req.body.numCorrect !== 'number'){
       message = 'numCorrect is not a number';
-      return res.status(422).json({message});
+      return res.status(426).json({message});
     }
 
     if(req.body.numQuestAns && typeof req.body.numQuestAns !== 'number'){
       message = 'numQuestAns is not a number';
-      return res.status(422).json({message});
+      return res.status(427).json({message});
     }
 
     const correctAns = req.body.correctAns;
@@ -70,30 +70,17 @@ userRouter.put('/checkAnswer',
     }
 
     updObj.correctAns = req.body.correctAns;
-    // updObj.correctAns = {
-    //   turkWord: correctAns.turkWord,
-    //   engWord: correctAns.engWord,
-    //   questId: correctAns.questId,
-    //   weight: correctAns.weight
-    // };
-    console.log('hi', updObj.correctAns);
-    // Object.keys(req.body.correctAns).map(field => {
-    //   if(req.body.correctAns !== 'next'){
-    //     updObj.correctAns[field]  = req.body.correctAns[field];
-    //   }
-    // });
 
+    let lastAnswer;
     if(req.body.userInput !== req.body.correctAns.engWord){
       updObj.numCorrect = req.body.numCorrect;
       updObj.correctAns.weight = 1;
-      updObj.lastAnswer = false;
-      console.log('wrong');
+      lastAnswer = false;
     }
     else{
       updObj.numCorrect = req.body.numCorrect + 1;
       updObj.correctAns.weight *= 2;
-      updObj.lastAnswer = true;
-      console.log('right');
+      lastAnswer = true;
     }
 
     updObj.numQuestAns = req.body.numQuestAns + 1;
@@ -107,9 +94,8 @@ userRouter.put('/checkAnswer',
       newArr = [...req.body.questTracker.slice(0, req.body.correctAns.weight),
         updObj.correctAns, ...req.body.questTracker.slice(req.body.correctAns.weight)];
     }
-    console.log('I AM HERE',req.body.questTracker);
+
     updObj.questTracker = newArr;
-    console.log('I AM NOT HERE', updObj.questTracker);
 
     if(updObj.questTracker){
       updObj.questTracker.map(el => {
@@ -138,11 +124,13 @@ userRouter.put('/checkAnswer',
     .findOneAndUpdate({googleId: req.user.googleId}, {$set:updObj}, {new:true})
     .exec()
     .then(user => {
-      return res.status(201).json(user.apiRepr());
+      const lastAnswerObj = user.apiRepr();
+      lastAnswerObj.lastAnswer = lastAnswer;
+      lastAnswerObj.previousWord = updObj.correctAns;
+      return res.status(201).json(lastAnswerObj);
     })
     .catch(err => {
       message = `Internal Server Error User Put: ${err}`;
-      console.log(message);
       return res.status(500).json({message});
     });
   });
