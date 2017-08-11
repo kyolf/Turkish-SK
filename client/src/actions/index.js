@@ -1,52 +1,53 @@
 import * as Cookies from 'js-cookie';
 import LinkedList from '../linkedList';
 
-
-//GET Me
+//Get the current Info of the User
 export const FETCH_ME_REQUEST = 'FETCH_ME_REQUEST';
-export const fetchMeRequest = ()=>({
+export const fetchMeRequest = () => ({
   type: FETCH_ME_REQUEST
 });
 
 export const FETCH_ME_SUCCESS = 'FETCH_ME_SUCCESS';
-export const fetchMeSuccess = (currentUser)=>({
+export const fetchMeSuccess = (currentUser) => ({
   type: FETCH_ME_SUCCESS,
   currentUser
 });
 
 export const FETCH_ME_ERROR = 'FETCH_ME_ERROR';
-export const fetchMeError = (error)=>({
+export const fetchMeError = (error) => ({
   type: FETCH_ME_ERROR,
   error
 });
 
+//Gets the Info of current user from the database
+//If Unauthorized clear the cookie and prevent info retrieval
 export const FETCH_ME = 'FETCH_ME';
-export const fetchMe = (accessToken)=>dispatch=>{
-  dispatch(fetchMeRequest())
+export const fetchMe = (accessToken) => dispatch => {
+  dispatch(fetchMeRequest());
   return fetch('/api/users/me', {
     headers: {
       'Authorization': `Bearer ${accessToken}`
-    }}).then(response => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              // Unauthorized, clear the cookie and go to
-              // the login page
-              Cookies.remove('accessToken');
-              return;
-            }
-            Promise.reject(response.statusText);
-          }
-          return response.json();
-        }).then(currentUser => {
-            return dispatch(fetchMeSuccess(currentUser));
-            })
-        .catch(err => {
-            console.log(err);
-            dispatch(fetchMeError(err));
-        })
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 401) {
+        Cookies.remove('accessToken');
+        return;
+      }
+      Promise.reject(response.statusText);
+    }
+    return response.json();
+  })
+  .then(currentUser => {
+    return dispatch(fetchMeSuccess(currentUser));
+  })
+  .catch(err => {
+    return dispatch(fetchMeError(err));
+  })
 }
 
-//GET vocab words
+//grabs the vocab words from the database
 export const FETCH_VOCAB_REQUEST = 'FETCH_VOCAB_REQUEST';
 export const fetchVocabRequest = ()=>({
   type: FETCH_VOCAB_REQUEST
@@ -66,8 +67,12 @@ export const fetchVocabError = (error)=>({
   error
 });
 
+//If unauthorized, remove the cookie
+//Checks if the current user ever started the quiz
+//if the current user has, grab the list from where the user left off at
+//if the current user hasn't, make a list from the vocabs in the database
 export const FETCH_VOCAB = 'FETCH_VOCAB';
-export const fetchVocab = (accessToken)=>dispatch=>{
+export const fetchVocab = (accessToken) => dispatch => {
   const newList = new LinkedList();
   dispatch(fetchMeRequest());
   return fetch('/api/users/me', {
@@ -78,8 +83,6 @@ export const fetchVocab = (accessToken)=>dispatch=>{
   .then(response => {
     if (!response.ok) {
       if (response.status === 401) {
-        // Unauthorized, clear the cookie and go to
-        // the login page
         Cookies.remove('accessToken');
         return;
       }
@@ -101,8 +104,6 @@ export const fetchVocab = (accessToken)=>dispatch=>{
     .then(response => {
       if (!response.ok) {
         if (response.status === 401) {
-          // Unauthorized, clear the cookie and go to
-          // the login page
           Cookies.remove('accessToken');
           return;
         }
@@ -111,13 +112,11 @@ export const fetchVocab = (accessToken)=>dispatch=>{
       return response.json();
     })
     .then(vocab => {
-      console.log('these are the words being returned: ', vocab);
       newList.insertAll(vocab);
       return dispatch(fetchVocabSuccess(newList, 0, 0));
     })
     .catch(err => {
-      console.log(err);
-      dispatch(fetchVocabError(err));
+      return dispatch(fetchVocabError(err));
     })
   })
   // .then(response => {
@@ -132,39 +131,24 @@ export const fetchVocab = (accessToken)=>dispatch=>{
   //   return dispatch(fetchVocabSuccess(newList));
   // })
   .catch(err => {
-    console.log(err);
-    dispatch(fetchMeError(err));
+    return dispatch(fetchMeError(err));
   })
 }
 
-export const INCREMENT_NUM_SEEN = 'INCREMENT_NUM_SEEN';
-export const incrementNumSeen = (numSeenWords)=>({
-  type: INCREMENT_NUM_SEEN,
-  numSeenWords
-})
-
-export const INCREMENT_SCORE = 'INCREMENT_SCORE';
-export const incrementScore = ()=>({
-  type: INCREMENT_SCORE
-})
-
-export const INCREMENT_NUM_QUEST = 'INCREMENT_NUM_QUEST';
-export const incrementNumQuest = ()=>({
-  type:INCREMENT_NUM_QUEST
-})
-
+//Reset the right or wrong feedback for the user
 export const RESET_FEEDBACK = 'RESET_FEEDBACK';
-export const resetFeedBack = ()=>({
+export const resetFeedBack = () => ({
   type: RESET_FEEDBACK 
 });
 
+//Answering the question
 export const ANSWER_QUESTION_REQUEST = 'ANSWER_QUESTION_REQUEST';
-export const answerQuestionRequest = ()=>({
+export const answerQuestionRequest = () => ({
   type:ANSWER_QUESTION_REQUEST
 });
 
 export const ANSWER_QUESTION_SUCCESS = 'ANSWER_QUESTION_SUCCESS';
-export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, lastAnswer, previousWord)=>({
+export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, lastAnswer, previousWord) => ({
   type:ANSWER_QUESTION_SUCCESS,
   numCorrect,
   numQuestAns,
@@ -174,13 +158,15 @@ export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, las
 });
 
 export const ANSWER_QUESTION_ERROR = 'ANSWER_QUESTION_ERROR';
-export const answerQuestionError = (error) =>({
+export const answerQuestionError = (error) => ({
   type: ANSWER_QUESTION_ERROR,
   error
 });
 
+//Sends the data to the backend for the correct or wrong logic
+//Updates the state with the data that gets sent back
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
-export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, numQuestAns, accessToken)=>dispatch=>{
+export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, numQuestAns, accessToken) => dispatch => {
   const node = vocabWords.delete();
   const correctAns = {
     turkWord: node.turkWord,
@@ -209,8 +195,6 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
   .then(response=>{
     if (!response.ok) {
       if (response.status === 401) {
-        // Unauthorized, clear the cookie and go to
-        // the login page
         Cookies.remove('accessToken');
         return;
       }
@@ -226,41 +210,4 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
   .catch(error=>{
     return dispatch(answerQuestionError(error));
   })
-}
-
-//UNused and UNneeded
-//GET Google login
-export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
-export const fetchLoginRequest = ()=>({
-  type: FETCH_LOGIN_REQUEST
-});
-
-export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
-export const fetchLoginSuccess = ()=>({
-  type: FETCH_LOGIN_SUCCESS,
-});
-
-export const FETCH_LOGIN_ERROR = 'FETCH_LOGIN_ERROR';
-export const fetchLoginError = (error)=>({
-  type: FETCH_LOGIN_ERROR,
-  error
-});
-
-export const FETCH_LOGIN = 'FETCH_LOGIN';
-export const fetchLogin = ()=>dispatch=>{
-    dispatch(fetchLoginRequest());
-    return fetch('/api/auth/google')
-        .then(response => {
-            if (!response.ok) {
-                Promise.reject(response.statusText);
-            }
-            return response.json();
-        }).then(login => {
-            console.log(login);
-            return dispatch(fetchLoginSuccess());
-          })
-        .catch(err => {
-            console.log(err);
-            return dispatch(fetchLoginError(err));
-        })
 }
