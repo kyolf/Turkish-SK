@@ -2,11 +2,11 @@
 by Sonja Duric, Kyle Szeto <br/>
 
 ## Description
-A Web App that uses a space algorithm in order to help you learn Turkish. 
+A Web App that uses a spaced repitition algorithm in order to help you learn Turkish. 
 
 Our app is deployed at http://yinelemek.herokuapp.com/.
 
-## Space Algoritm Explained
+## Spaced Repitition Algoritm Explained
 If you correctly answered the vocab, the importance value will be multiplied by 2 and move importance value spaces from the start point.
 
 If you incorrectly answered the vocab, the importance value will be reset to 1 and it will show up after you finish answering the current word.
