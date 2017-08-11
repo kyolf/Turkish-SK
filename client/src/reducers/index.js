@@ -38,9 +38,8 @@ export const reducer = (state = initialState, action) => {
       case actions.ANSWER_QUESTION_REQUEST:
         return Object.assign({}, state, {loading: true});
       case actions.ANSWER_QUESTION_SUCCESS:
-        state = Object.assign({}, state, {score: action.numCorrect, numSeenWords: action.numQuestAns, 
+        return Object.assign({}, state, {score: action.numCorrect, numSeenWords: action.numQuestAns, 
           vocabWords: action.questTracker, lastAnswer: action.lastAnswer, previousWord: action.previousWord});
-        return state;
       case actions.ANSWER_QUESTION_ERROR:
         return Object.assign({}, state, {error: action.error, loading: false});
       default:

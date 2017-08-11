@@ -122,6 +122,7 @@ vocabRouter.delete('/:id', (req, res) => {
   });
 });
 
+//Page Not Found
 vocabRouter.use('*', (req, res) => {
   return res.status(404).json({message:'Page Not Found'});
 });
