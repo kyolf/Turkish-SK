@@ -17,6 +17,7 @@ If you incorrectly answered the vocab, the importance value will be reset to 1 a
 **Deployment**: Mlab, Heroku, Travis </br>
 
 ## Description Of API
+### API Calls Done In Client
 * **GET** http://yinelemek.herokuapp.com/api/vocab 
   * This allows you to get all the vocabs in the database 
   * This is used to store the vocab words in a linked list when a user initially created an account.
