@@ -10,24 +10,23 @@ import {fetchMe} from '../actions';
 import './app.css';
 
 class App extends React.Component {
-
-    componentDidMount() {
-        // Job 4: Redux-ify all of the state and fetch calls to async actions.
-        const accessToken = Cookies.get('accessToken');
-        if (accessToken) {
-            this.props.dispatch(fetchMe(accessToken));
-        }
+  //Fetch current user info
+  componentDidMount() {
+    const accessToken = Cookies.get('accessToken');
+    if (accessToken) {
+      this.props.dispatch(fetchMe(accessToken));
     }
+  }
 
-    render() {
-
-        return( 
-          <div className="App">
-            <Header currentUser={this.props.currentUser}/>
-            { (!this.props.currentUser) ? <LoginPage /> :  <QuestionPage /> }
-          </div>
-        );
-    }
+  //If user is not logged in, Login Page, else Question Page
+  render() {
+    return( 
+      <div className="App">
+        <Header currentUser={this.props.currentUser}/>
+        { (!this.props.currentUser) ? <LoginPage /> :  <QuestionPage /> }
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

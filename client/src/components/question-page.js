@@ -26,7 +26,7 @@ class QuestionPage extends React.Component {
   //renders the Question page based on your input
   render() {
     let display = '';
-    if(this.props.lastAnswer) {
+    if (this.props.lastAnswer) {
       display = 'green';
     }
     else if (this.props.lastAnswer === false) { 

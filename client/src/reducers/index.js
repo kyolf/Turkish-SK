@@ -16,33 +16,33 @@ const initialState = {
 }
 
 export const reducer = (state = initialState, action) => {
-    switch(action.type){
-      case actions.FETCH_ME_REQUEST:
-        return Object.assign({}, state, {loading: true});
-      case actions.FETCH_ME_SUCCESS:
-        return Object.assign({}, state, {currentUser: action.currentUser, loading: false});
-      case actions.FETCH_ME_ERROR:
-        return Object.assign({}, state, {error: action.error, loading: false});
-      case actions.FETCH_VOCAB_REQUEST:
-        return Object.assign({}, state, {loading: true});
-      case actions.FETCH_VOCAB_SUCCESS:
-        return Object.assign({}, state, {vocabWords: action.vocabWords, score: action.score, numSeenWords: action.numSeenWords, loading: false});
-      case actions.FETCH_VOCAB_ERROR:
-        return Object.assign({}, state, {error: action.error, loading: false});
-      case actions.INCREMENT_NUM_SEEN:
-        return Object.assign({}, state, {numSeenWords: ++action.numSeenWords, loggedIn: true, loading:false});
-      case actions.INCREMENT_SCORE:
-        return Object.assign({}, state, {score: ++state.score, loggedIn: true, loading: false});
-      case actions.RESET_FEEDBACK:
-        return Object.assign({}, state, {lastAnswer:null});
-      case actions.ANSWER_QUESTION_REQUEST:
-        return Object.assign({}, state, {loading: true});
-      case actions.ANSWER_QUESTION_SUCCESS:
-        return Object.assign({}, state, {score: action.numCorrect, numSeenWords: action.numQuestAns, 
-          vocabWords: action.questTracker, lastAnswer: action.lastAnswer, previousWord: action.previousWord});
-      case actions.ANSWER_QUESTION_ERROR:
-        return Object.assign({}, state, {error: action.error, loading: false});
-      default:
-        return state;
-    }
+  switch(action.type){
+    case actions.FETCH_ME_REQUEST:
+      return Object.assign({}, state, {loading: true});
+    case actions.FETCH_ME_SUCCESS:
+      return Object.assign({}, state, {currentUser: action.currentUser, loading: false});
+    case actions.FETCH_ME_ERROR:
+      return Object.assign({}, state, {error: action.error, loading: false});
+    case actions.FETCH_VOCAB_REQUEST:
+      return Object.assign({}, state, {loading: true});
+    case actions.FETCH_VOCAB_SUCCESS:
+      return Object.assign({}, state, {vocabWords: action.vocabWords, score: action.score, numSeenWords: action.numSeenWords, loading: false});
+    case actions.FETCH_VOCAB_ERROR:
+      return Object.assign({}, state, {error: action.error, loading: false});
+    case actions.INCREMENT_NUM_SEEN:
+      return Object.assign({}, state, {numSeenWords: ++action.numSeenWords, loggedIn: true, loading:false});
+    case actions.INCREMENT_SCORE:
+      return Object.assign({}, state, {score: ++state.score, loggedIn: true, loading: false});
+    case actions.RESET_FEEDBACK:
+      return Object.assign({}, state, {lastAnswer:null});
+    case actions.ANSWER_QUESTION_REQUEST:
+      return Object.assign({}, state, {loading: true});
+    case actions.ANSWER_QUESTION_SUCCESS:
+      return Object.assign({}, state, {score: action.numCorrect, numSeenWords: action.numQuestAns, 
+        vocabWords: action.questTracker, lastAnswer: action.lastAnswer, previousWord: action.previousWord});
+    case actions.ANSWER_QUESTION_ERROR:
+      return Object.assign({}, state, {error: action.error, loading: false});
+    default:
+      return state;
+  }
 }
