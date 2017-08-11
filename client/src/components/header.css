@@ -1,63 +1,127 @@
 
-.header{
-    width: 100%;
-    background-color: #f44336;
-    color: whitesmoke;
-    height: 150px;
-    padding-top: 1.5em;
-    padding-bottom: .5em;
+.header {
+  width: 100%;
+  background-color: #f44336;
+  color: whitesmoke;
+  height: 220px;
+  padding-top: 1.5em;
+  padding-bottom: .5em;
+  overflow:auto
 }
 
 
-.header > h1{
-    margin-left: 1.5em;
+.header > h1 {
+  margin: 0.6em 0em 0.3em 0.6em;
+  font-size: 4em;
 }
 
-.header > h3{
-    margin-left: 2.8em;
+.header > h3 {
+  margin-left: 2.8em;
+  font-size: 1.5em;
 }
 
-.header a > button{
-    display: relative;
-    float: right;
-    width: 20em;
-    height: 3em;
-    margin-top: -7em;
-    cursor: pointer;
+.header a > button {
+  display: relative;
+  float: right;
+  width: 15em;
+  height: 3em;
+  margin: -10em 5% 0 0;
+  cursor: pointer;
 }
 
-@media (max-width: 800px){
+@media only screen and (max-width: 1000px) {
+  .header > h1 {
+    font-size: 3.5em;
+  }
 
-    /* .header > h3 {
-        width: 350px;
-    } */
+  .header > h3 {
+    width: 500px;
+    font-size: 1.3em;
+  } 
 
-    .header a > button{
-    display: relative;
-    float: right;
-    width: 15em;
+  .header a > button{
     margin-top: -9em;
-    margin-right: 4em;
-    cursor: pointer;
-    }
+  } 
 }
 
-@media (max-width: 470px){
+@media only screen and (max-width: 800px) {
+  .header > h1 {
+    font-size: 2.5em;
+  }
 
-    .header{
-        width: 470px;
-    }
+  .header > h3 {
+    width: 500px;
+    font-size: 1.25em;
+  } 
 
-    .header > h3 {
-        width: 350px;
-    }       
-
-    .header a > button{
-    display: relative;
-    float: right;
-    width: 10em;
-    margin-top: -11em;
-    margin-right: 4em;
-    }
+  .header a > button{
+    margin: -8.3em 1.5em 0 0;
+  } 
 }
 
+@media only screen and (max-width: 700px) {
+  .header > h1 {
+    margin-left: 30%;
+  }
+
+  .header > h3 {
+    width: 500px;
+    font-size: 1.25em;
+    margin-left: 15%;
+  } 
+
+  .header a > button{
+    margin: 1em 35% 0 0;
+    width: 15em;
+  } 
+}
+
+@media only screen and (max-width: 570px) {
+  .header{
+    height: 230px;
+  } 
+
+  .header > h1 {
+    margin-left: 25%;
+  } 
+
+  .header > h3 {
+    width: 410px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.17em;
+  }
+
+  .header a > button{
+    margin: 1em 30% 0 0;
+    width: 15em;
+  }        
+}
+
+@media only screen and (max-width: 450px) {
+  .header > h1 {
+    margin-left: 20%;
+  }
+
+  .header > h3 {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.17em;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+   .header > h1 {
+    margin-left: 15%;
+  } 
+  .header a > button {
+    margin: 1em 25% 0 0;
+  }
+}
+
+ @media only screen and (max-width: 350px) {
+  .header a > button {
+    margin: 1em 20% 0 0;
+  }
+} 
