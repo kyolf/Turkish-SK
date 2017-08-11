@@ -31,7 +31,6 @@ class QuestionPage extends React.Component {
         };
         return (
             <div className='question-page'>
-                <h1>{`hi ${display}`}</h1>
                 <div className={`question-panel ${display}`}>
                     <div className='score'>Score: {this.props.score}/{this.props.numSeenWords}</div>
 
