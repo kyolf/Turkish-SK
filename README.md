@@ -1,8 +1,53 @@
-# Space Repetition Starter Kit
+# Yinelemek
+by Sonja Duric, Kyle Szeto <br/>
 
-This should get you started with your Spaced Repetition app. We're giving you your basic directory structure, and the framework for authentication. However, we aren't persisting any information, and it will be your job to add Mongo/Mongoose. There are helpful comments in `server/index.js`.
+## Description
+A Web App that uses a space algorithm in order to help you learn Turkish. 
 
-In development, the starter kit runs two servers. One of which is from `create-react-app`, so you get all the fancy hot reloading, etc, the other is the backend. In production, we generate a static folder with all our React stuff, and serve that with Express.
+Our app is deployed at http://yinelemek.herokuapp.com/.
+
+##Space Algoritm Explained
+If you correctly answered the vocab, the importance value will be multiplied by 2 and move importance value spaces from the start point.
+
+If you incorrectly answered the vocab, the importance value will be reset to 1 and it will show up after you finish answering the current word.
+
+## Technology Used
+**FrontEnd**: HTML, CSS, Javascript, React, Redux 
+**BackEnd**: NodeJs, Express, Passport, MongoDB, Mongoose
+**Deployment**: Mlab, Heroku, Travis
+
+## Description Of API
+* **GET** http://yinelemek.herokuapp.com/api/vocab 
+  * This allows you to get all the vocabs in the database 
+  * This is used to store the vocab words in a linked list when a user initially created an account.
+* **GET** http://yinelemek.herokuapp.com/api/auth/google  
+  * This allows you to see which google account to login to by taking you to the google login page. 
+* **GET** http://yinelemek.herokuapp.com/api/auth/google/callback
+  * Once you signed in to your google account, this will lead you to our question page. 
+* **GET** http://yinelemek.herokuapp.com/api/auth/logout 
+  * This will remove the cookie of token and logs you out from our question page.
+* **GET** https://tick-it-jk.herokuapp.com/api/users/me 
+  * This allows you to get your current information from the database. 
+  * This is used for session management purposes. 
+* **PUT** https://tick-it-jk.herokuapp.com/api/users/checkAnswer 
+  * This allows you to check if your answer is right or wrong.
+  * It updates the database based on your input.
+
+### Admin API Calls Done in Postman
+If you don't have Postman, here's a link to download Postman: https://www.getpostman.com/
+
+* **POST** http://yinelemek.herokuapp.com/api/vocab  
+  * This allows you to post a vocab into the database 
+  * This is used to add new vocabs into the database
+* **PUT** http://yinelemek.herokuapp.com/api/vocab/:id
+  * This allows you to update the vocab words
+  * This is used to update vocab words you don't like or typed incorrectly.
+* **DELETE** http://yinelemek.herokuapp.com/api/vocab/:id
+  * This allows you to delete a vocab from the database 
+  * This is used to delete any vocab words you don't like  
+* **GET** https://tick-it-jk.herokuapp.com/api/users/ 
+  * This allows user to get all the users from the database
+  * This is used to allow you to see if your google user account is successfully added to the database.
 
 ## Getting started
 
@@ -51,56 +96,33 @@ Back in your project locally, create an `secret.js` file in the `/server` direct
 ```js
 module.exports = {
   CLIENT_ID: 'yourId123.apps.googleusercontent.com',
-  CLIENT_SECRET: 'yoursecret'
+  CLIENT_SECRET: 'yoursecret',
+  DATABASE_URL: 'mongodb://<dbuser>:<dbpassword>@ds035664.mlab.com:12345/example'
 }
 ```
 
-This file is in ignored by git because it is in your `.gitignore`. Never commit or push 'secret.js', the client id and secret need to be kept safe like a password.
+This file is ignored by git because it is in your `.gitignore`. Never commit or push 'secret.js', the client id and secret need to be kept safe like a password.
 
 ### Local Development
+* Open a new terminal and change to directory you git clone this repo
+* Make sure MongoDB is installed 
+* Run `mongod` in the terminal => to run the mongodb server
+* Open a new terminal and change to directory you git clone this repo
+* Run `npm run dev` in terminal
 
-```sh
-  npm run dev
-```
+## ScreenShots
+#### LogIn Page/ Introductory Page
+When you go to our website, you will be directed to our Introductory Page / Login Page <br/>
+![Login](README_images/home.png "Login Page") <br/>
 
-## Deployment to Heroku
+#### Question Page
+When you are logged in from Google, you will be directed to our Question Page <br/>
+![Question](README_images/question.png "Question Page") <br/>
 
-```sh
-$ heroku create
-```
+#### Answer Correctly
+If you answer the question correctly, it will look like the page below. <br/>
+![Correct](README_images/correct.png "Correct Page") <br/>
 
-Configure your Google client id and secret on Heroku:
-
-```sh
-$ heroku config:set CLIENT_ID=yourId123.apps.googleusercontent.com CLIENT_SECRET=yoursecret
-```
-
-(You can also do this on dashboard.heroku.com under your app's settings.)
-
-### To deploy:
-
-```sh
-$ git push heroku master
-```
-
-Your app should be live on Heroku soon, but if you try to `Log in with Google`, you will get a 400 error. Take note of your new app's URL.
-
-
-#### Updating Google API authorized origins
-
-
-To fix this, go back to the Google API Dashboard and:
-
-(You might need to use `http` and or `http` for your Heroku URIs)
-
-- Add `http://your-app-name-123.herokuapp.com` to Authorized JavaScript origins
-- Add `http://your-app-name-123.herokuapp.com/api/auth/google/callback` to Authorized redirect URIs
-
-Try to log in  `Log in with Google` again, and you're golden!
-
-
-## Wireframes for our project
-
-* Landing page: https://wireframe.cc/nbAV7J
-* Questions page: https://wireframe.cc/K822F9
-
+#### Answer Incorrectly
+If you answer the question incorrectly, it will look like the page below. <br/>
+![Incorrect](README_images/incorrect.png "Incorrect Page") <br/>
