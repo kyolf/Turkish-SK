@@ -28,6 +28,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+//Creates a user if user is not in database
+//Updates a user's access token if the user is in database
 passport.use(
   new GoogleStrategy({
     clientID:  secret.CLIENT_ID,
@@ -75,6 +77,7 @@ passport.use(
   }
 ));
 
+//checks if the accessToken is valid for the current user
 passport.use(
   new BearerStrategy(
     (token, done) => {
@@ -91,9 +94,12 @@ passport.use(
   )
 );
 
+//Google User Need To Sign In Endpoint
 app.get('/api/auth/google',
   passport.authenticate('google', {scope: ['profile']}));
 
+//Google User Signed In Endpoint
+//Creates a cookie when signed in
 app.get('/api/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/',
@@ -105,28 +111,16 @@ app.get('/api/auth/google/callback',
   }
 );
 
+//Logout Endpoint
 app.get('/api/auth/logout', (req, res) => {
   req.logout();
   res.clearCookie('accessToken');
   res.redirect('/');
 });
 
-app.get('/api/me',
-  passport.authenticate('bearer', {session: false}),
-  (req, res) => {
-    res.json({googleId: req.user.googleId});
-  }
-);
-
-app.get('/api/questions',
-  passport.authenticate('bearer', {session: false}),
-  (req, res) => res.json(['Question 1', 'Question 2'])
-);
-
 app.use('/api/users', userRouter);
 app.use('/api/vocab', vocabRouter);
 
-// Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // Unhandled requests which aren't for the API should serve index.html so
