@@ -192,7 +192,7 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
     },
     body: JSON.stringify(updObj)    
   })
-  .then(response=>{
+  .then(response => {
     if (!response.ok) {
       if (response.status === 401) {
         Cookies.remove('accessToken');
@@ -202,12 +202,12 @@ export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, n
     }
     return response.json();    
   })
-  .then(userInfo=>{
+  .then(userInfo => {
     const llist = new LinkedList();
     llist.insertAll(userInfo.questTracker);
     return dispatch(answerQuestionSuccess(userInfo.numCorrect, userInfo.numQuestAns, llist, userInfo.lastAnswer, userInfo.previousWord));
   })
-  .catch(error=>{
+  .catch(error => {
     return dispatch(answerQuestionError(error));
   })
 }
