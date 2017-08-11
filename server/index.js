@@ -7,10 +7,11 @@ const mongoose = require('mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
 
-
 const {User} = require('./models/models_user.js');
 const {userRouter} = require('./router/route_user.js');
 const {vocabRouter} = require('./router/route_vocab.js');
+
+mongoose.Promise = global.Promise;
 
 let secret = {
   CLIENT_ID: process.env.CLIENT_ID,
@@ -40,7 +41,8 @@ passport.use(
       accessToken,
       numCorrect: 0,
       numQuestAns: 0,
-      questId: 0
+      numTracker: [],
+      lastAnswer: null
     };
 
     User

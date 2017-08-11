@@ -15,9 +15,12 @@ class QuestionPage extends React.Component {
 
     onSubmit(e){
         e.preventDefault();
+        const accessToken = Cookies.get('accessToken');
         const userAnswer = this.textInput.value.trim().toLowerCase();
         // this.props.dispatch(actions.resetFeedBack());
-        this.props.dispatch(actions.submitAnswer(userAnswer, this.props.vocabWords));
+        // this.props.dispatch(actions.submitAnswer(userAnswer, this.props.vocabWords));
+        this.props.dispatch(actions.answerQuestion(userAnswer, this.props.vocabWords, this.props.currentUser, 
+          this.props.score, this.props.numSeenWords, this.props.lastAnswer, accessToken));
         
         this.textInput.value = '';
     }
@@ -27,7 +30,11 @@ class QuestionPage extends React.Component {
         let display = '';
         if(this.props.lastAnswer)
           display = 'green';
-        else if (this.props.lastAnswer === false){ display = 'red'};
+        else if (this.props.lastAnswer === false){ 
+          display = 'red'
+        };
+        console.log('this.props.lastAnswer', this.props.lastAnswer)
+        console.log('display', display);
         return (
             <div className='question-page'>
                 <div className={`question-panel ${display}`}>
@@ -61,6 +68,7 @@ const mapStateToProps = state => ({
     numSeenWords: state.numSeenWords,
     lastAnswer: state.lastAnswer,
     previousWord: state.previousWord,
+    currentUser: state.currentUser
 });
 
 export default connect(mapStateToProps)(QuestionPage);

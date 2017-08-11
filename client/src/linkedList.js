@@ -31,7 +31,7 @@ export default class LinkedList{
         turkWord: arr[i].turkWord,
         engWord: arr[i].engWord,
         questId: arr[i].questId,
-        weight: 1
+        weight: arr[i].weight || 1
       };
 
       const curNode = node;

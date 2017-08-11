@@ -54,9 +54,11 @@ export const fetchVocabRequest = ()=>({
 });
 
 export const FETCH_VOCAB_SUCCESS = 'FETCH_VOCAB_SUCCESS';
-export const fetchVocabSuccess = (vocabWords)=>({
+export const fetchVocabSuccess = (vocabWords, score, numSeenWords)=>({
   type: FETCH_VOCAB_SUCCESS,
-  vocabWords
+  vocabWords,
+  score,
+  numSeenWords
 });
 
 export const FETCH_VOCAB_ERROR = 'FETCH_VOCAB_ERROR';
@@ -67,25 +69,74 @@ export const fetchVocabError = (error)=>({
 
 export const FETCH_VOCAB = 'FETCH_VOCAB';
 export const fetchVocab = (accessToken)=>dispatch=>{
-    dispatch(fetchMeRequest());
+  const newList = new LinkedList();
+  dispatch(fetchMeRequest());
+  return fetch('/api/users/me', {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Unauthorized, clear the cookie and go to
+        // the login page
+        Cookies.remove('accessToken');
+        return;
+      }
+      Promise.reject(response.statusText);
+    }
+    return response.json();
+  })
+  .then(currentUser => {
+    console.log('Current User', currentUser);
+    const tracker = currentUser.questTracker;
+    if(tracker.length !== 0 ){
+      newList.insertAll(tracker);
+      return dispatch(fetchVocabSuccess(newList, currentUser.numCorrect, currentUser.numQuestAns));
+    }
     return fetch('/api/vocab/', {
       headers: {
         'Authorization': `Bearer ${accessToken}`
-      }}).then(response => {
-            if (!response.ok) {
-                Promise.reject(response.statusText);
-            }
-            return response.json();
-        }).then(vocab => {
-            console.log('these are the words being returned: ', vocab);
-            const newList = new LinkedList();
-            newList.insertAll(vocab);
-            return dispatch(fetchVocabSuccess(newList));
-          })
-        .catch(err => {
-            console.log(err);
-            dispatch(fetchVocabError(err));
-        })
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          // Unauthorized, clear the cookie and go to
+          // the login page
+          Cookies.remove('accessToken');
+          return;
+        }
+        Promise.reject(response.statusText);
+      }
+      return response.json();
+    })
+    .then(vocab => {
+      console.log('these are the words being returned: ', vocab);
+      newList.insertAll(vocab);
+      return dispatch(fetchVocabSuccess(newList));
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(fetchVocabError(err));
+    })
+  })
+  // .then(response => {
+  //   if (!response.ok) {
+  //     Promise.reject(response.statusText);
+  //   }
+  //   return response.json();
+  // })
+  // .then(vocab => {
+  //   console.log('these are the words being returned: ', vocab);
+  //   newList.insertAll(vocab);
+  //   return dispatch(fetchVocabSuccess(newList));
+  // })
+  .catch(err => {
+    console.log(err);
+    dispatch(fetchMeError(err));
+  })
 }
 
 export const INCREMENT_NUM_SEEN = 'INCREMENT_NUM_SEEN';
@@ -112,9 +163,82 @@ export const submitAnswer = (userAnswer, vocabWords)=> ({
 });
 
 export const RESET_FEEDBACK = 'RESET_FEEDBACK';
-export const resetFeedBack = () => ({
+export const resetFeedBack = ()=>({
   type: RESET_FEEDBACK 
 });
+
+export const ANSWER_QUESTION_REQUEST = 'ANSWER_QUESTION_REQUEST';
+export const answerQuestionRequest = ()=>({
+  type:ANSWER_QUESTION_REQUEST
+});
+
+export const ANSWER_QUESTION_SUCCESS = 'ANSWER_QUESTION_SUCCESS';
+export const answerQuestionSuccess = (numCorrect, numQuestAns, questTracker, lastAnswer)=>({
+  type:ANSWER_QUESTION_SUCCESS,
+  numCorrect,
+  numQuestAns,
+  questTracker,
+  lastAnswer
+});
+
+export const ANSWER_QUESTION_ERROR = 'ANSWER_QUESTION_ERROR';
+export const answerQuestionError = (error) =>({
+  type: ANSWER_QUESTION_ERROR,
+  error
+});
+
+export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const answerQuestion = (userInput, vocabWords, currentUser, numCorrect, numQuestAns, lastAnswer, accessToken)=>dispatch=>{
+  const node = vocabWords.delete();
+  const correctAns = {
+    turkWord: node.turkWord,
+    engWord: node.engWord,
+    questId: node.questId,
+    weight: node.weight || 1
+  }
+  console.log('vocabWords before fetch ',vocabWords);
+  const newArr = vocabWords.deleteAll();
+  console.log('newArr ', newArr);
+  const updObj = {
+    googleId: currentUser.googleId,
+    correctAns,
+    userInput,
+    numCorrect,
+    numQuestAns,
+    questTracker: newArr
+  }
+  dispatch(answerQuestionRequest());
+  fetch('/api/users/checkAnswer', {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updObj)    
+  })
+  .then(response=>{
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Unauthorized, clear the cookie and go to
+        // the login page
+        Cookies.remove('accessToken');
+        return;
+      }
+      Promise.reject(response.statusText);
+    }
+    return response.json();    
+  })
+  .then(userInfo=>{
+    const llist = new LinkedList();
+    llist.insertAll(userInfo.questTracker);
+    console.log('I AM HERE',llist);
+    console.log('...................', userInfo.lastAnswer);
+    return dispatch(answerQuestionSuccess(userInfo.numCorrect, userInfo.numQuestAns, llist, userInfo.lastAnswer))
+  })
+  .catch(error=>{
+    return dispatch(answerQuestionError(error));
+  })
+}
 
 //UNused and UNneeded
 //GET Google login
