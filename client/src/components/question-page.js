@@ -6,7 +6,7 @@ import * as actions from '../actions';
 
 import './question-page.css';
 
-class QuestionPage extends React.Component {
+export class QuestionPage extends React.Component {
   //Fetch for the list of Vocabs from database 
   componentDidMount() {
     const accessToken = Cookies.get('accessToken');

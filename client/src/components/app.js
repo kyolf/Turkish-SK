@@ -9,7 +9,7 @@ import {fetchMe} from '../actions';
 
 import './app.css';
 
-class App extends React.Component {
+export class App extends React.Component {
   //Fetch current user info
   componentDidMount() {
     const accessToken = Cookies.get('accessToken');
