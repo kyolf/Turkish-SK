@@ -1,8 +1,6 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {QuestionPage} from '../components/question-page';
-import {answerQuestion, ANSWER_QUESTION} from '../actions'
-
 
 describe('QuestionPage Test', () => {
   it('Smoke Test', () => {
