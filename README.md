@@ -18,6 +18,8 @@ If you incorrectly answered the vocab, the importance value will be reset to 1 a
 
 ## Things to Look Into in the Future
 * How to use chai testing with Google Auth
+* Making it visually appealing
+* Reset Question/Score Feature
 
 ## Description Of API
 ### API Calls Done In Client
