@@ -119,17 +119,6 @@ export const fetchVocab = (accessToken) => dispatch => {
       return dispatch(fetchVocabError(err));
     })
   })
-  // .then(response => {
-  //   if (!response.ok) {
-  //     Promise.reject(response.statusText);
-  //   }
-  //   return response.json();
-  // })
-  // .then(vocab => {
-  //   console.log('these are the words being returned: ', vocab);
-  //   newList.insertAll(vocab);
-  //   return dispatch(fetchVocabSuccess(newList));
-  // })
   .catch(err => {
     return dispatch(fetchMeError(err));
   })
