@@ -81,12 +81,12 @@ vocabRouter.put('/:id', (req, res) => {
 
   if (req.body.turkWord && typeof req.body.turkWord !== 'string') {
     message = 'Turkish Word is not a string';
-    return res.status(400).json({message});
+    return res.status(422).json({message});
   }
 
   if (req.body.engWord && typeof req.body.engWord !== 'string') {
     message = 'English Word is not a string';
-    return res.status(400).json({message});
+    return res.status(422).json({message});
   }
 
   updateFields.map(field => {
