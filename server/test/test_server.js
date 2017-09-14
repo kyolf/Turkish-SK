@@ -31,7 +31,22 @@ function tearDownDb() {
   });
 }
 
-function seedVocab(){
+const cUser = {
+  googleId: '1234566666789',
+  accessToken: 't35tFak3Acc355T0k3nasdasf',
+  numCorrect: 0,
+  numQuestAns: 0,
+  questTracker: [
+    {turkWord:'su', engWord: 'water', questId: 1, weight: 1},
+    {turkWord:'kahve', engWord: 'coffee', questId: 2, weight: 1}
+  ]
+};
+
+function seedUser() {
+  return User.create(cUser);
+}
+
+function seedVocab() {
   const seedData = [];
   for(let i = 0; i < 10; i++) {
     seedData.push({
@@ -337,7 +352,15 @@ describe('Vocab API Testing', () => {
 
 describe('User API Testing', () => {
   before(() => {
-    return runServer();
+    return runServer(undefined, TEST_DATABASE_URL);
+  });
+
+  beforeEach(() => {
+    return seedUser();
+  });
+
+  afterEach(() => {
+    return tearDownDb();
   });
 
   after(() => {
@@ -368,6 +391,345 @@ describe('User API Testing', () => {
           userDB.accessToken.should.equal(user.accessToken);
           userDB.numCorrect.should.equal(user.numCorrect);
           userDB.numQuestAns.should.equal(user.numQuestAns);
+        });
+    });
+
+    it('should allow me to get my info', () => {
+      return chai.request(app)
+        .get('/api/users/me')
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .then(me => {
+          me.should.have.status(200);
+          me.body.should.be.a('object');
+          me.body.should.include.key('googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questTracker');
+          me.body.googleId.should.equal(cUser.googleId);
+          me.body.accessToken.should.equal(cUser.accessToken);
+          me.body.numCorrect.should.equal(cUser.numCorrect);
+          me.body.numQuestAns.should.equal(cUser.numQuestAns);
+          me.body.questTracker.forEach((quest, ind) => {
+            cUser.questTracker[ind]._id = quest._id;
+          });
+          me.body.questTracker.should.deep.equal(cUser.questTracker);
+        });
+    });
+  });
+  
+  describe('User Put Endpoint', ()=>{
+    it('should return correct values when it is correct user input', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .then(res => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          res.body.should.include.key('googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questTracker', 'lastAnswer', 'previousWord');
+          res.body.googleId.should.equal(cUser.googleId);
+          res.body.accessToken.should.equal(cUser.accessToken);
+          res.body.numCorrect.should.equal(cUser.numCorrect + 1);
+          res.body.numQuestAns.should.equal(cUser.numQuestAns + 1);
+          res.body.lastAnswer.should.equal(true);
+          updUser.correctAns.weight *= 2;
+          res.body.previousWord.should.deep.equal(updUser.correctAns);
+        });
+    });
+
+    it('should return correct values when it is wrong user input', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'water',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .then(res => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          res.body.should.include.key('googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questTracker', 'lastAnswer', 'previousWord');
+          res.body.googleId.should.equal(cUser.googleId);
+          res.body.accessToken.should.equal(cUser.accessToken);
+          res.body.numCorrect.should.equal(cUser.numCorrect);
+          res.body.numQuestAns.should.equal(cUser.numQuestAns + 1);
+          res.body.lastAnswer.should.equal(false);
+          res.body.previousWord.should.deep.equal(updUser.correctAns);
+        });
+    });
+
+    it('should not return any values when questTracker is missing', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(400);
+        });
+    });
+
+    it('should not return any values when userInput is missing', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when userInput is not a string', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 11,
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns is not in body', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        numCorrect: cUser.numCorrect,
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(400);
+        });
+    });
+
+    it('should not return any values when numCorrect is not a number', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: 'cUser.numCorrect',
+        numQuestAns: cUser.numQuestAns
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when numQuestAns is not a number', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns is missing questId', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns is missing turkWord', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns is missing engWord', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns is missing weight', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns has incorrect turkWord type', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 1, engWord: 'turkey', weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns has incorrect engWord type', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 1, weight: 1, questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns has incorrect weight type', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: '1', questId: 3},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
+        });
+    });
+
+    it('should not return any values when correctAns has incorrect questId type', () => {
+      const updUser = {
+        googleId: cUser.googleId,
+        questTracker: cUser.questTracker,
+        userInput: 'turkey',
+        correctAns: {turkWord: 'hindi', engWord: 'turkey', weight: 1, questId: '3'},
+        numCorrect: cUser.numCorrect,
+        numQuestAns: 'cUser.numQuestAns'
+      };
+
+      return chai.request(app)
+        .put('/api/users/checkAnswer')
+        .send(updUser)
+        .set('Authorization', `Bearer ${cUser.accessToken}`)
+        .catch(res => {
+          res.should.have.status(422);
         });
     });
   });

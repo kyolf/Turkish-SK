@@ -42,12 +42,12 @@ userRouter.put('/checkAnswer',
     
     if (!req.body.correctAns) {
       message = 'correctAns is not in the body';
-      return res.status(423).json({message});
+      return res.status(400).json({message});
     }
 
     if (!req.body.questTracker) {
       message = 'Quest Tracker is not in the body';
-      return res.status(424).json({message});
+      return res.status(400).json({message});
     }
 
     if (!req.body.userInput && typeof req.body.userInput !== 'string') {
@@ -57,12 +57,12 @@ userRouter.put('/checkAnswer',
 
     if (req.body.numCorrect && typeof req.body.numCorrect !== 'number') {
       message = 'numCorrect is not a number';
-      return res.status(426).json({message});
+      return res.status(422).json({message});
     }
 
     if (req.body.numQuestAns && typeof req.body.numQuestAns !== 'number') {
       message = 'numQuestAns is not a number';
-      return res.status(427).json({message});
+      return res.status(422).json({message});
     }
 
     updObj.correctAns = req.body.correctAns;
