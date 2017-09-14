@@ -334,3 +334,41 @@ describe('Vocab API Testing', () => {
     });
   });
 });
+
+describe('User API Testing', () => {
+  before(() => {
+    return runServer();
+  });
+
+  after(() => {
+    return closeServer();
+  });
+
+  describe('Get All Users Endpoint', () => {
+    it('should', ()=>{
+      let user;
+      return chai.request(app)
+        .get('/api/users/')
+        .then(res => {
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('array');
+          res.body.should.have.length.of.at.least(1);
+          res.body.forEach(users=>{
+            users.should.be.a('object');
+            users.should.include.key('id', 'googleId', 'accessToken', 'numCorrect', 'numQuestAns', 'questTracker');
+          });
+          user = res.body[0];
+          return User
+            .findById(user.id)
+            .exec();
+        })
+        .then(userDB => {
+          userDB.googleId.should.equal(user.googleId);
+          userDB.accessToken.should.equal(user.accessToken);
+          userDB.numCorrect.should.equal(user.numCorrect);
+          userDB.numQuestAns.should.equal(user.numQuestAns);
+        });
+    });
+  });
+});
