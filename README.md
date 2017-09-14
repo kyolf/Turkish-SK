@@ -16,6 +16,9 @@ If you incorrectly answered the vocab, the importance value will be reset to 1 a
 **BackEnd**: NodeJs, Express, Passport, MongoDB, Mongoose </br>
 **Deployment**: Mlab, Heroku, Travis </br>
 
+## Things to Look Into in the Future
+* How to use chai testing with Google Auth
+
 ## Description Of API
 ### API Calls Done In Client
 * **GET** http://yinelemek.herokuapp.com/api/vocab 
