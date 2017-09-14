@@ -17,7 +17,6 @@ If you incorrectly answered the vocab, the importance value will be reset to 1 a
 **Deployment**: Mlab, Heroku, Travis </br>
 
 ## Things to Look Into in the Future
-* How to use chai testing with Google Auth
 * Making it visually appealing
 * Reset Question/Score Feature
 
