@@ -5,7 +5,7 @@ import './info-page.css';
 export default function InfoPage() {
   return (
     <div className='InfoPage'>
-      <h1>Why you use our app?</h1>
+      <h1>Why would you use our app?</h1>
       <main>
         <section className='info_block'>
           <img src='./frontend_images/clueless.png' alt='beginner'/>
