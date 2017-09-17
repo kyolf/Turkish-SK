@@ -30,6 +30,10 @@
 }
 
 @media only screen and (max-width: 1000px) {
+  .header {
+    position: static;
+  }
+  
   .header > h1 {
     font-size: 3.5em;
   }
@@ -45,6 +49,12 @@
 }
 
 @media only screen and (max-width: 800px) {
+  .header {
+    position:fixed;
+    top: 0;
+    left: 0;
+  }
+  
   .header > h1 {
     font-size: 2.5em;
   }
@@ -57,19 +67,9 @@
   .header a > button{
     margin: -8.3em 1.5em 0 0;
   } 
-
-  .header {
-    position: static;
-  }
 }
 
-@media only screen and (max-width: 700px) {
-  .header {
-    position:fixed;
-    top: 0;
-    left: 0;
-  }
-  
+@media only screen and (max-width: 700px) {  
   .header > h1 {
     margin-left: 30%;
   }

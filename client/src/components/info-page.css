@@ -7,12 +7,18 @@
 
 .InfoPage > h1 {
   text-align: center;
-  margin: 60px 0 10px;
+  margin: 60px 0 25px;
 }
 
 .info_block {
   margin: 5% 30px 20px;
   width: 33%;
+}
+
+.info_block > img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
 }
 
 .info_block > h2 {
@@ -26,7 +32,7 @@
   line-height: 1.5em;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 800px) {
   .InfoPage {
     margin: 290px 0 20px;
   }
@@ -42,6 +48,12 @@
   .info_block {
     width: initial;
     margin: 0 20px 20px;
+  }
+
+  .info_block > img {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 5px;
   }
 }
 

@@ -71,7 +71,7 @@ li {
   animation-duration: 3s;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 800px) {
   .question-panel{
     margin-top: 290px;
   }
