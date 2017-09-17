@@ -6,7 +6,7 @@
   height: 220px;
   padding-top: 1.5em;
   padding-bottom: .5em;
-  overflow:auto
+  overflow:auto;
 }
 
 
@@ -57,9 +57,19 @@
   .header a > button{
     margin: -8.3em 1.5em 0 0;
   } 
+
+  .header {
+    position: static;
+  }
 }
 
 @media only screen and (max-width: 700px) {
+  .header {
+    position:fixed;
+    top: 0;
+    left: 0;
+  }
+  
   .header > h1 {
     margin-left: 30%;
   }

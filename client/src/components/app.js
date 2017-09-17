@@ -3,7 +3,7 @@ import * as Cookies from 'js-cookie';
 import {connect} from 'react-redux';
 
 import QuestionPage from './question-page';
-import LoginPage from './login-page';
+import InfoPage from './info-page';
 import Header from './header';
 import {fetchMe} from '../actions';
 
@@ -23,7 +23,7 @@ export class App extends React.Component {
     return( 
       <div className="App">
         <Header currentUser={this.props.currentUser}/>
-        { (!this.props.currentUser) ? <LoginPage /> :  <QuestionPage /> }
+        { (!this.props.currentUser) ? <InfoPage /> :  <QuestionPage /> }
       </div>
     );
   }

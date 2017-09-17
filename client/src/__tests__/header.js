@@ -7,16 +7,22 @@ describe('Header Testing', () => {
     shallow(<Header />)
   });
 
-  it('has a div, a h1, a h3, and a button', () => {
+  it('has a div, a h1, a h3, and a logout button', () => {
     const wrapper = shallow(<Header currentUser={'bob'}/>);
     expect(wrapper.find('div').length).toEqual(1);
     expect(wrapper.find('h1').length).toEqual(1);
     expect(wrapper.find('h3').length).toEqual(1);
-    expect(wrapper.find('button').length).toEqual(1);
+    
+    const logout = wrapper.find('button');
+    expect(logout.length).toEqual(1);
+    expect(logout.text()).toEqual('Logout');
+    
   });
 
-  it('has no button when there are no user', () => {
+  it('has a login button when there are no user', () => {
     const wrapper = shallow(<Header/>);
-    expect(wrapper.find('button').length).toEqual(0);
+    const login = wrapper.find('button');
+    expect(login.length).toEqual(1);
+    expect(login.text()).toEqual('Login with Google');
   });
 });

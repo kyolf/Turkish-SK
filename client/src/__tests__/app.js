@@ -14,9 +14,9 @@ describe('App Test', () => {
     expect(wrapper.find('Header').length).toEqual(1);
   });
 
-  it('has a Login Page if there is no a current user', () => {
+  it('has a Info Page if there is no a current user', () => {
     const wrapper = shallow(<App />);
-    expect(wrapper.find('LoginPage').length).toEqual(1);
+    expect(wrapper.find('InfoPage').length).toEqual(1);
   });
 
   it('has a Question Page if there is a current user', () => {
