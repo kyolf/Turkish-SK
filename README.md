@@ -116,9 +116,9 @@ This file is ignored by git because it is in your `.gitignore`. Never commit or 
 * Run `npm run dev` in terminal
 
 ## ScreenShots
-#### LogIn Page/ Introductory Page
+#### Introductory Page
 When you go to our website, you will be directed to our Introductory Page / Login Page </br>
-![Login](README_images/home.png "Login Page") </br>
+![Intro](README_images/home.png "Intro Page") </br>
 
 #### Question Page
 When you are logged in from Google, you will be directed to our Question Page </br>
