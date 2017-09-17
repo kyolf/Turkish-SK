@@ -117,7 +117,7 @@ This file is ignored by git because it is in your `.gitignore`. Never commit or 
 
 ## ScreenShots
 #### Introductory Page
-When you go to our website, you will be directed to our Introductory Page / Login Page </br>
+When you go to our website, you will be directed to our Introductory Page </br>
 ![Intro](README_images/home.png "Intro Page") </br>
 
 #### Question Page
